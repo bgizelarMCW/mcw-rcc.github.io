@@ -19,7 +19,7 @@ Your lab's scratch space is `/scratch/g/pi_netid`, where `pi_netid` is your PI's
 
 - **You belong to one lab:** use the plain commands in the middle column.
 - **You belong to more than one lab:** add `-F lab_pi_netid` to say which lab you mean. For example, if your PI's username is `jsmith`, use `-F lab_jsmith`.
-    - `ws_allocate` requires it. If you leave it out, the command lists your labs and asks you to try again.
+    - `ws_allocate` requires it. If you leave it out, the command lists your labs and shows an example command with `-F` that you can copy.
     - With the other commands, it is the safe choice when you are unsure.
 - Not sure which labs you belong to? Run `ws_list -l`. It shows your labs as `lab_pi_netid`. Ignore the `lab_donotuse` entry. It is not a lab.
 
@@ -74,7 +74,7 @@ ws_allocate --private myproject
 RCC does not send expiration reminders by default. To get an email before your workspace expires, add `-r` (days before expiration) and `-m` (your email address) when you create it:
 
 ```
-ws_allocate -r 7 -m username@mcw.edu myproject
+ws_allocate -r 7 -m your.name@mcw.edu myproject
 ```
 
 This example sends a reminder 7 days before the workspace expires.
