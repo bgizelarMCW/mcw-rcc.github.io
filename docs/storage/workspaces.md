@@ -6,14 +6,14 @@ Your lab's scratch space is `/scratch/g/pi_netid`, where `pi_netid` is your PI's
 
 ## Quick Reference
 
-| Task                     | Command                        | If you are in more than one lab                |
-|--------------------------|--------------------------------|------------------------------------------------|
-| Create a workspace       | `ws_allocate myproject`        | `ws_allocate -F lab_pi_netid myproject`        |
-| List your workspaces     | `ws_list`                      | `ws_list -F lab_pi_netid`                      |
-| Extend a workspace       | `ws_extend myproject 60`       | `ws_extend -F lab_pi_netid myproject 60`       |
-| Release a workspace      | `ws_release myproject`         | `ws_release -F lab_pi_netid myproject`         |
-| See what can be restored | `ws_restore -l`                | `ws_restore -l` (shows all your labs)          |
-| Restore a workspace      | `ws_restore old_name new_name` | Same command. Create the new one with `-F`     |
+| Task                     | Command                        | If you are in more than one lab            |
+|--------------------------|--------------------------------|--------------------------------------------|
+| Create a workspace       | `ws_allocate myproject`        | `ws_allocate -F lab_pi_netid myproject`    |
+| List your workspaces     | `ws_list`                      | `ws_list -F lab_pi_netid`                  |
+| Extend a workspace       | `ws_extend myproject 60`       | `ws_extend -F lab_pi_netid myproject 60`   |
+| Release a workspace      | `ws_release myproject`         | `ws_release -F lab_pi_netid myproject`     |
+| See what can be restored | `ws_restore -l`                | `ws_restore -l` (shows all your labs)      |
+| Restore a workspace      | `ws_restore old_name new_name` | Same command. Create the new one with `-F` |
 
 ## Which Command Do I Use?
 
@@ -227,16 +227,16 @@ Your lab group can already read and write your workspace, unless you created it 
 
 To give someone outside your lab access, use `ws_share`. Only the workspace owner can share it. If you belong to more than one lab, add `-F lab_pi_netid` as with the other commands.
 
-| Task                                   | Command                                          |
-|----------------------------------------|--------------------------------------------------|
-| Share read-only with a user            | `ws_share share myproject jdoe`                  |
-| Share read and write with a user       | `ws_share --readwrite share myproject jdoe`      |
-| Share with a group                     | `ws_share sharegroup myproject sg-otherlab`      |
-| See who you shared with                | `ws_share list myproject`                        |
-| Stop sharing with a user               | `ws_share unshare myproject jdoe`                |
-| Stop sharing with a group              | `ws_share unsharegroup myproject sg-otherlab`    |
-| Stop sharing with everyone             | `ws_share unshare-all myproject`                 |
-| Check that sharing is set up correctly | `ws_share check myproject`                       |
+| Task                                   | Command                                       |
+|----------------------------------------|-----------------------------------------------|
+| Share read-only with a user            | `ws_share share myproject jdoe`               |
+| Share read and write with a user       | `ws_share --readwrite share myproject jdoe`   |
+| Share with a group                     | `ws_share sharegroup myproject sg-otherlab`   |
+| See who you shared with                | `ws_share list myproject`                     |
+| Stop sharing with a user               | `ws_share unshare myproject jdoe`             |
+| Stop sharing with a group              | `ws_share unsharegroup myproject sg-otherlab` |
+| Stop sharing with everyone             | `ws_share unshare-all myproject`              |
+| Check that sharing is set up correctly | `ws_share check myproject`                    |
 
 `jdoe` is the other person's MCW username. Use the workspace name you chose (`myproject`), not the Id from `ws_list`.
 
@@ -274,6 +274,6 @@ See [Using Data in a Job](../cluster/jobs/storage-job.md) for more.
 | Cannot create files in `/scratch/g/pi_netid`              | Create a workspace with `ws_allocate`, and save files there.                                                                                                            |
 | A workspace expired or was released and you need the data | Restore it within 14 days. See [Restore a Workspace](#restore-a-workspace).                                                                                             |
 | `ws_restore` does not work                                | Create the new workspace first. Then copy the old name exactly as `ws_restore -l` shows it. Do not use the name from `ws_list`. Answer the quick question that appears. |
-| Someone you shared with cannot find your workspace          | Send them the full path from `ws_list`. They cannot list your lab folder, so they need the exact path. Run `ws_share list myproject` to confirm they are listed.   |
+| Someone you shared with cannot find your workspace        | Send them the full path from `ws_list`. They cannot list your lab folder, so they need the exact path. Run `ws_share list myproject` to confirm they are listed.        |
 
 --8<-- "includes/abbreviations.md"
