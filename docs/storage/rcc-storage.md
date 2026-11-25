@@ -6,10 +6,10 @@ All storage is connected via high speed link to the cluster and available to you
 
 Each user has the same set of default storage paths:
 
-| Type                  | Path                | Quota                         | Protection            | Description                       |
-| --------------------- | ------------------- | ----------------------------- | --------------------- | --------------------------------- |
-| [`Home`](#home)       | /home/netid         | 100 GB                        | snapshot, replication | account configuration and scripts |
-| [`Group`](#group)     | /group/pi_netid     | 1 TB, expandable with payment | snapshot, replication | shared raw research data          |
+| Type                  | Path                | Quota                         | Protection            | Description                                                   |
+| --------------------- | ------------------- | ----------------------------- | --------------------- | ------------------------------------------------------------- |
+| [`Home`](#home)       | /home/netid         | 100 GB                        | snapshot, replication | account configuration and scripts                             |
+| [`Group`](#group)     | /group/pi_netid     | 1 TB, expandable with payment | snapshot, replication | shared raw research data                                      |
 | [`Scratch`](#scratch) | /scratch/g/pi_netid | 25 TB                         | none                  | temporary job files, organized in [workspaces](workspaces.md) |
 
 ??? tip "You can easily find your available storage paths and current utilization on the cluster  with the `mydisks` command."
