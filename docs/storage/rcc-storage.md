@@ -10,7 +10,7 @@ Each user has the same set of default storage paths:
 | --------------------- | ------------------- | ----------------------------- | --------------------- | --------------------------------- |
 | [`Home`](#home)       | /home/netid         | 100 GB                        | snapshot, replication | account configuration and scripts |
 | [`Group`](#group)     | /group/pi_netid     | 1 TB, expandable with payment | snapshot, replication | shared raw research data          |
-| [`Scratch`](#scratch) | /scratch/g/pi_netid | 25 TB                         | none                  | temporary job files               |
+| [`Scratch`](#scratch) | /scratch/g/pi_netid | 25 TB                         | none                  | temporary job files, organized in [workspaces](workspaces.md) |
 
 ??? tip "You can easily find your available storage paths and current utilization on the cluster  with the `mydisks` command."
 
@@ -39,15 +39,17 @@ This space is organized by lab group. Each folder in `/group` represents a lab, 
 
 ### Scratch
 
-Scratch storage is intended for temporary job files. Every group has a directory at `/scratch/g/pi_netid` with quota limit 25 TB. Files on scratch storage are subject to retention limits, which is discussed below. In general, you should avoid storing files on scratch unless you are running a job. Please remember that scratch storage is limited and shared among all groups.
+Scratch storage is intended for temporary job files. Every group has a directory at `/scratch/g/pi_netid` with quota limit 25 TB. Scratch is organized into [workspaces](workspaces.md): time-limited folders that you create with `ws_allocate`. Each workspace lasts 60 days by default and can be extended once. Please remember that scratch storage is limited and shared among all groups.
 
 #### Retention
 
-Any file that is older than 60 days (based on creation, modification, or access time) may be deleted by RCC admins without notice. RCC sends periodic reminders to clean up scratch storage directories. These reminders will include your percentage of files older than 60 days. A list of these old files can be provided upon request. If the scratch file system becomes full, RCC admins may begin deleting files without notice, starting with files older than 60 days, followed by any other files as needed to free up space.
+Workspaces expire automatically 60 days after creation (or after their extension). When a workspace expires or you release it, it enters a 14-day grace period during which you can restore it. After that, the data is permanently deleted. Data in a workspace in its grace period still counts against your lab's scratch quota.
+
+RCC does not send expiration reminders by default. To be reminded, set a reminder when you [create the workspace](workspaces.md#get-an-expiration-reminder). If the scratch file system becomes full, RCC admins may need to delete files without notice, so please release workspaces you no longer need.
 
 !!! warning "Scratch storage is for jobs, not projects."
 
-    Do not use scratch storage for long-term project data. If you are not running a job, you should not have any data in scratch. Failure to adhere to this policy may result in loss of your data located on scratch.
+    Do not use scratch storage for long-term project data. Copy results you want to keep to `/group` before your work is done. Failure to adhere to this policy may result in loss of your data located on scratch.
 
 ### Local Scratch
 
