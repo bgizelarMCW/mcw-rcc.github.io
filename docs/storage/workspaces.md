@@ -221,11 +221,34 @@ Restoring puts the old data into a workspace that already exists, so you create 
 !!! note "Use the name from ws_restore -l"
     When a workspace is released or expires, its name changes. Copy the name exactly as `ws_restore -l` shows it. Do not use the name from `ws_list`.
 
-## Sharing a Workspace
+## Share a Workspace
 
 Your lab group can already read and write your workspace, unless you created it with `--private`.
 
-Sharing with people outside your lab is not available yet. The `ws_share` command exists, but it does not work with RCC storage, so do not use it. If you need to share data with someone in another lab, contact <help-rcc@mcw.edu>.
+To give someone outside your lab access, use `ws_share`. Only the workspace owner can share it. If you belong to more than one lab, add `-F lab_pi_netid` as with the other commands.
+
+| Task                                   | Command                                          |
+|----------------------------------------|--------------------------------------------------|
+| Share read-only with a user            | `ws_share share myproject jdoe`                  |
+| Share read and write with a user       | `ws_share --readwrite share myproject jdoe`      |
+| Share with a group                     | `ws_share sharegroup myproject sg-otherlab`      |
+| See who you shared with                | `ws_share list myproject`                        |
+| Stop sharing with a user               | `ws_share unshare myproject jdoe`                |
+| Stop sharing with a group              | `ws_share unsharegroup myproject sg-otherlab`    |
+| Stop sharing with everyone             | `ws_share unshare-all myproject`                 |
+| Check that sharing is set up correctly | `ws_share check myproject`                       |
+
+`jdoe` is the other person's MCW username. Use the workspace name you chose (`myproject`), not the Id from `ws_list`.
+
+- **Read-only** lets them open and copy your files and list your folders. **Read and write** also lets them create, change, and delete files.
+- To change someone from read-only to read and write, or back, run `ws_share share` again with or without `--readwrite`. It replaces their old access.
+- Files and folders you add later are shared automatically. Changing permissions with `chmod` does not remove the sharing.
+- Send them the full path from `ws_list`, for example `/scratch/g/pi_netid/netid-myproject`. They can open that path, but they cannot list `/scratch/g/pi_netid` to find it.
+- Sharing ends when the workspace expires or is released.
+- You cannot share with a group that has more than 100 members. Sharing read and write with a group asks you to confirm first.
+
+!!! note "Files written by others count against your lab's quota"
+    Files that people you shared with create in your workspace are stored in your lab's scratch space and count against your lab's scratch quota. They own those files. If you stop sharing and see `Operation not permitted` for some files, those files belong to someone else. Contact <help-rcc@mcw.edu> if you need them changed.
 
 ## Using Workspaces in Jobs
 
@@ -251,6 +274,6 @@ See [Using Data in a Job](../cluster/jobs/storage-job.md) for more.
 | Cannot create files in `/scratch/g/pi_netid`              | Create a workspace with `ws_allocate`, and save files there.                                                                                                            |
 | A workspace expired or was released and you need the data | Restore it within 14 days. See [Restore a Workspace](#restore-a-workspace).                                                                                             |
 | `ws_restore` does not work                                | Create the new workspace first. Then copy the old name exactly as `ws_restore -l` shows it. Do not use the name from `ws_list`. Answer the quick question that appears. |
-| You want to share a workspace with another lab            | Contact <help-rcc@mcw.edu>. `ws_share` is not available yet.                                                                                                            |
+| Someone you shared with cannot find your workspace          | Send them the full path from `ws_list`. They cannot list your lab folder, so they need the exact path. Run `ws_share list myproject` to confirm they are listed.   |
 
 --8<-- "includes/abbreviations.md"
