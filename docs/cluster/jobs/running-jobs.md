@@ -496,11 +496,11 @@ JOB REJECTED: workspace 'myproject' (owner netid) expires on Fri Dec 18 2026 at 
 
 Pick the option that fits your work:
 
-- **Extend the workspace** if you still need it. You can extend once, and only after 75% of its lifetime has passed (day 45 of a 60-day workspace). If it is too early, the message tells you the date. See [Extend a Workspace](../../storage/workspaces.md#extend-a-workspace).
+- **Extend the workspace** if you still need it. {{ ws_extend_rule }} If it is too early, the message tells you the date. See [Extend a Workspace](../../storage/workspaces.md#extend-a-workspace).
 - **Ask for less time** if your job does not need the full time limit. The suggested time ends a few hours before the workspace expires, to allow for time in the queue.
 - **Move to a new workspace** if the workspace cannot be extended. Remember to update any paths in your job script.
 
-If the workspace belongs to someone else in your lab, the message asks you to have the owner extend it.
+If the workspace belongs to someone else in your lab, the message shows the command to extend it for them (`ws_allocate -x -F lab_PI_NetID -u owner myproject 60`), or you can ask the owner.
 
 !!! tip "Plan ahead"
     Before a long job or a series of jobs, run `ws_list` and check `remaining time`. A workspace that expires in a few days cannot hold a 7-day job.

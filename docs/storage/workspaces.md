@@ -31,7 +31,7 @@ Your lab's scratch space is `/scratch/g/pi_netid`, where `pi_netid` is your PI's
 
 - A workspace lasts 60 days by default. 60 days is also the maximum.
 - You can extend each workspace once, for up to 60 days.
-- You can extend only after 75% of the workspace's lifetime has passed. For a 60-day workspace, that is day 45. See [When You Can Extend](#when-you-can-extend).
+- {{ ws_extend_rule }} See [When You Can Extend](#when-you-can-extend).
 - An extension counts from the day you run it, not from the old expiration date.
 - Asking for fewer days than the workspace has left shortens it. A shorter request does not use up your extension.
 - Your lab group can read and write your workspace by default.
@@ -140,12 +140,13 @@ ws_extend -F lab_pi_netid myproject 60
 - The new expiration date is the number of days you ask for, counted from today.
 - If you ask for fewer days than remain, you are asked to confirm, and the workspace is shortened. Your extension is not used.
 - If you ask for more than 60 days, you are asked whether to continue with 60. In a script or batch job there is no question, and 60 is used with a warning.
-- To add or change a reminder while extending, use `ws_allocate -x -r 7 -m username@mcw.edu myproject 60`. This uses your extension, so the 75% rule applies.
+- To add or change a reminder while extending, use `ws_allocate -x -r 7 -m username@mcw.edu myproject 60`. This uses your extension, so the {{ ws_extend_pct }}% rule applies.
 - Check `available extensions` in `ws_list` to see if you have an extension left. When it shows 0, the workspace cannot be extended again.
+- Anyone in your lab can extend a workspace that is shared with the lab, using the owner's username. For example, to extend `myproject` owned by `jdoe`: `ws_allocate -x -F lab_pi_netid -u jdoe myproject 60`. The same rules apply, and it uses the workspace's one extension.
 
 ### When You Can Extend
 
-You can extend a workspace only after 75% of its current lifetime has passed. The lifetime counts from when you created the workspace to its expiration date.
+{{ ws_extend_rule }} The lifetime counts from when you created the workspace to its expiration date.
 
 | Workspace lifetime | You can extend from |
 |--------------------|---------------------|
@@ -311,7 +312,7 @@ See [Using Data in a Job](../cluster/jobs/storage-job.md) for more.
 | `ws_allocate` lists your labs and asks you to try again    | You belong to more than one lab. Add `-F lab_pi_netid`.                                                                                                                                                                      |
 | `available extensions : 0`                                 | The workspace was already extended and cannot be extended again. Copy your data to group storage, or create a new workspace.                                                                                                 |
 | Extension did not give you more time                       | An extension counts from today. If you asked for fewer days than remained, the workspace was shortened.                                                                                                                      |
-| ws_extend says the workspace can not be extended yet       | Less than 75% of its lifetime has passed. Run the command again on or after the date it shows. Your extension was not used.                                                                                                  |
+| ws_extend says the workspace can not be extended yet       | Less than {{ ws_extend_pct }}% of its lifetime has passed. Run the command again on or after the date it shows. Your extension was not used.                                                                                 |
 | You did not get an expiration email                        | Reminders are off by default. Set `-r` and `-m` when you create the workspace. See [Get an Expiration Reminder](#get-an-expiration-reminder).                                                                                |
 | Cannot create files in `/scratch/g/pi_netid`               | Create a workspace with `ws_allocate`, and save files there.                                                                                                                                                                 |
 | A workspace expired or was released and you need the data  | Restore it within 14 days. See [Restore a Workspace](#restore-a-workspace).                                                                                                                                                  |

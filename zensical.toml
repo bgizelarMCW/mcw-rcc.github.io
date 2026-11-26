@@ -228,7 +228,7 @@ custom_checkbox = true
 auto_append = ["includes/abbreviations.md"]
 [project.markdown_extensions.zensical.extensions.glightbox]
 [project.markdown_extensions.zensical.extensions.macros]
-include_yaml = ["includes/r-packages.yml", "includes/modules.yml", "includes/pub-list.yml"]
+include_yaml = ["includes/r-packages.yml", "includes/modules.yml", "includes/pub-list.yml", "includes/workspace-policy.yml"]
 
 [project.plugins.blog]
 post_date_format = "medium"

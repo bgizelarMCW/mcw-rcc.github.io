@@ -134,7 +134,7 @@
     Once your lab has moved to workspaces, scratch is organized into [workspaces](storage/workspaces.md). Create one with `ws_allocate myproject` and save your files there. The lab folder itself only holds workspaces.
 
 ??? question "My workspace is about to expire. How do I keep my data?"
-    You can extend a workspace once, after 75% of its lifetime has passed, with `ws_extend myproject 60`. Otherwise copy the data you want to keep to `/group`, or move it to a new workspace. If it already expired, you can restore it for 14 days. See [Workspaces](storage/workspaces.md).
+    {{ ws_extend_rule }} Run `ws_extend myproject 60`. Otherwise copy the data you want to keep to `/group`, or move it to a new workspace. If it already expired, you can restore it for 14 days. See [Workspaces](storage/workspaces.md).
 
 ??? question "Why is `/group` not available on HPC cluster compute nodes?"
     The file system that contains `/group` is not designed for performance computing. In order to preserve every user's experience with `/group`, it is not available on compute nodes. You should follow the [scratch directory procedures](cluster/jobs/storage-job.md) to make sure your data is available to your cluster job.

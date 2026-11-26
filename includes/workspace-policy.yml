@@ -1,0 +1,5 @@
+# Workspace extension policy, used on several pages as {{ ws_extend_rule }} etc.
+# Change the numbers here, then check the "When You Can Extend" table in
+# docs/storage/workspaces.md, which lists example days for each lifetime.
+ws_extend_pct: 75
+ws_extend_rule: "You can extend a workspace once, and only after 75% of its lifetime has passed (day 45 of a 60-day workspace)."
