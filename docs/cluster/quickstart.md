@@ -24,6 +24,8 @@ Login is available both on and off campus via SSH and Open OnDemand. Please see 
 
 Your account has access to a set of storage directories by default. You can easily find your available storage paths and current utilization on the cluster with the `mydisks` command. Please see the [storage guide](../storage/rcc-storage.md) for details.
 
+Jobs read and write their files in scratch storage. Scratch is organized into [workspaces](../storage/workspaces.md), folders with an expiration date that you create with `ws_allocate`.
+
 ```txt
 $ mydisks
 ===== My Lab =====
@@ -69,11 +71,16 @@ echo "I have ${SLURM_CPUS_ON_NODE} CPUs on compute node $(hostname -s)"
 
 ### Submit the job
 
-Now I can submit my example job:
+Jobs run from a workspace in scratch storage. Create one (once), copy your job script into it, and submit the job from there:
 
 ```bash
+ws_allocate myproject
+cp test-job.slurm "$(ws_find myproject)"/
+cd "$(ws_find myproject)"
 sbatch test-job.slurm
 ```
+
+The job's `--time` must end before the workspace expires, or the job is rejected. See [Workspaces](../storage/workspaces.md#using-workspaces-in-jobs).
 
 Then I can check my job status:
 

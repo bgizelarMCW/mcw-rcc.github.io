@@ -82,7 +82,10 @@
     No. RCC does not allow root and/or sudo access on any system.
 
 ??? question "What if my job requires more than 7 days? Can I extend my job time?"
-    Yes. After you start the job, email the job number and time extension request to {{ support_email }}.
+    Yes. After you start the job, email the job number and time extension request to {{ support_email }}. Make sure the job's workspace will not expire before the longer job finishes. Check with `ws_list`.
+
+??? question "Why was my job rejected with `JOB REJECTED`?"
+    Your job runs in a [workspace](storage/workspaces.md) that would expire before the job's time limit ends, or has already expired. The message shows the commands to fix it: extend the workspace, request less time with `--time`, or move to a new workspace. See [Job Time Limits and Workspace Expiration](cluster/jobs/running-jobs.md#job-time-limits-and-workspace-expiration).
 
 ## Software
 
@@ -125,7 +128,13 @@
     RCC offers multiple types of storage to all users. Each storage type has a unique path on the cluster, and a unique use-case. Some storage is meant only for use with the cluster, while other storage like [Research Group Storage](storage/paid-storage.md) can be used as generalized Windows storage. Please see the [Storage Overview](storage/rcc-storage.md) for details.
 
 ??? question "Can I increase my storage limits?"
-    Your home directory limit cannot be increased. You scratch directory limit may be increase upon request but this is subject to availability. Your `/group` Research Group Storage directory may be increased by [purchasing additional space](storage/paid-storage.md).
+    Your home directory limit cannot be increased. Your scratch directory limit may be increased upon request, but this is subject to availability. Your `/group` Research Group Storage directory may be increased by [purchasing additional space](storage/paid-storage.md).
+
+??? question "Why can't I save files in `/scratch/g/pi_netid`?"
+    Once your lab has moved to workspaces, scratch is organized into [workspaces](storage/workspaces.md). Create one with `ws_allocate myproject` and save your files there. The lab folder itself only holds workspaces.
+
+??? question "My workspace is about to expire. How do I keep my data?"
+    You can extend a workspace once, after 75% of its lifetime has passed, with `ws_extend myproject 60`. Otherwise copy the data you want to keep to `/group`, or move it to a new workspace. If it already expired, you can restore it for 14 days. See [Workspaces](storage/workspaces.md).
 
 ??? question "Why is `/group` not available on HPC cluster compute nodes?"
     The file system that contains `/group` is not designed for performance computing. In order to preserve every user's experience with `/group`, it is not available on compute nodes. You should follow the [scratch directory procedures](cluster/jobs/storage-job.md) to make sure your data is available to your cluster job.
@@ -147,6 +156,8 @@
     ```
 
     In addition to the usual `work` directory, there is now a `zephyr` project directory, which is controlled by the `sg-pi-zephyr` security group. Project data would go in that directory, and any number of collaborators (MCW researchers) can be added to the security group.
+
+    To share scratch data for a job, you can share a workspace with a user or group outside your lab using `ws_share`. See [Share a Workspace](storage/workspaces.md#share-a-workspace).
 
 ??? question "Why did my Windows SMB storage share stopped working?"
     Stale connections for Windows shares are not uncommon. If your storage share stopped working, chances are this is a stale connection. This is especially true if the storage was working one day, and you cannot connect the next day. To fix this issue, you'll need to remount the storage with the following steps.
