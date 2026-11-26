@@ -6,13 +6,15 @@ PyTorch can be run in batch, interactive, or Jupyter Notebook. For more informat
 
 The following example will use PyTorch to train a network on the MNIST data set.
 
-First, download the PyTorch examples:
+First, create a [workspace](../storage/workspaces.md) for the job and download the PyTorch examples into it:
 
 ```bash
+ws_allocate pytorch-test
+cd "$(ws_find pytorch-test)"
 git clone https://github.com/pytorch/examples.git
 ```
 
-Now that you have the examples, use the following job script to train the network.
+Now that you have the examples, save the following job script in the workspace to train the network.
 
 <!-- markdownlint-disable MD046 -->
 === "pytorch-mnist.slurm"
@@ -34,7 +36,7 @@ Now that you have the examples, use the following job script to train the networ
 Submit the job:
 
 ```bash
-cd /scratch/g/pi_netid/pytorch-test && sbatch pytorch.sh
+cd "$(ws_find pytorch-test)" && sbatch pytorch-mnist.slurm
 ```
 
 ## PyTorch Jupyter Notebook
