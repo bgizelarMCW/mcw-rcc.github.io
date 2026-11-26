@@ -5,6 +5,9 @@
 
 Users may want to modify file/directory permissions to enable sharing. This should only be done in spaces that are meant for sharing. Each lab has shared group and scratch directories with inherited group permissions. **Never modify permissions to open your home directory for sharing**.
 
+!!! tip "Sharing scratch workspaces"
+    Your lab can already read and write your scratch workspaces. To share a workspace with someone outside your lab, use `ws_share` instead of `chmod`. See [Share a Workspace](workspaces.md#share-a-workspace).
+
 If you need group write permission for a file (not recommended in Linux):
 
 ```bash
