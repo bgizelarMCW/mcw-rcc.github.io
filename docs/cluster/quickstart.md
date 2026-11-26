@@ -24,8 +24,6 @@ Login is available both on and off campus via SSH and Open OnDemand. Please see 
 
 Your account has access to a set of storage directories by default. You can easily find your available storage paths and current utilization on the cluster with the `mydisks` command. Please see the [storage guide](../storage/rcc-storage.md) for details.
 
-Jobs read and write their files in scratch storage. Scratch is organized into [workspaces](../storage/workspaces.md), folders with an expiration date that you create with `ws_allocate`.
-
 ```txt
 $ mydisks
 ===== My Lab =====
@@ -34,6 +32,17 @@ Size     Used       Avail      Use%     File
 1TB      100GB      900GB      10%      /group/pi/
 25TB     5TB        25TB       20%      /scratch/g/pi/
 ```
+
+### Create a workspace
+
+Jobs read and write their files in scratch storage, because `/group` is not available on compute nodes. Scratch is organized into [workspaces](../storage/workspaces.md), folders with an expiration date (60 days by default). Create a workspace on a login node and copy your input data into it:
+
+```bash
+ws_allocate myproject
+cp -r /group/PI_NetID/work/mydata "$(ws_find myproject)"/
+```
+
+`ws_find myproject` prints the workspace path, for example `/scratch/g/PI_NetID/NetID-myproject`.
 
 ## Transferring Files
 
@@ -64,6 +73,9 @@ The SLURM job script syntax is shown below. Just like previous clusters, every j
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=NetID@mcw.edu # NetID is your username
 
+# run the job in your workspace
+cd "$(ws_find myproject)"
+
 echo "Starting at $(date)"
 echo "Job name: ${SLURM_JOB_NAME}, Job ID: ${SLURM_JOB_ID}"
 echo "I have ${SLURM_CPUS_ON_NODE} CPUs on compute node $(hostname -s)"
@@ -71,16 +83,13 @@ echo "I have ${SLURM_CPUS_ON_NODE} CPUs on compute node $(hostname -s)"
 
 ### Submit the job
 
-Jobs run from a workspace in scratch storage. Create one (once), copy your job script into it, and submit the job from there:
+Now I can submit my example job from the login node:
 
 ```bash
-ws_allocate myproject
-cp test-job.slurm "$(ws_find myproject)"/
-cd "$(ws_find myproject)"
 sbatch test-job.slurm
 ```
 
-The job's `--time` must end before the workspace expires, or the job is rejected. See [Workspaces](../storage/workspaces.md#using-workspaces-in-jobs).
+The job's `--time` must end before the workspace expires. See [Workspaces](../storage/workspaces.md#using-workspaces-in-jobs).
 
 Then I can check my job status:
 
