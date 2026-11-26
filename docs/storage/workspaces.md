@@ -1,5 +1,9 @@
 # Scratch Workspaces
 
+<!-- ROLLOUT NOTE: remove this admonition once every lab has moved to workspaces ("full prod"). -->
+!!! info "Workspaces are rolling out lab by lab"
+    RCC is moving labs to workspaces one at a time, and will contact your lab before its move. If your lab has not moved yet, nothing changes for you: keep using `/scratch/g/pi_netid` as before. Not sure? Run `ws_list -l`. If your lab is listed as `lab_pi_netid`, it has moved.
+
 Scratch storage is organized into workspaces. A workspace is a folder with an expiration date. You create one for each job or analysis, work in it, and release it when you are done. RCC cleans up expired workspaces automatically, which keeps scratch available for everyone.
 
 Your lab's scratch space is `/scratch/g/pi_netid`, where `pi_netid` is your PI's MCW username. You do not save files directly in that folder. You create a workspace inside it and work there.
@@ -272,29 +276,50 @@ To give someone outside your lab access, use `ws_share`. Only the workspace owne
 
 ## Using Workspaces in Jobs
 
-Create the workspace before you submit a job, then use its path in your script, for example:
+Create the workspace before you submit a job, copy your input data into it, and submit the job from inside it. `ws_find` prints the path of a workspace, so you do not need to type it:
 
 ```bash
-WS=/scratch/g/pi_netid/netid-myproject
-cd $WS
+ws_allocate myproject
+cp -r /group/pi_netid/work/inputs "$(ws_find myproject)"/
+cd "$(ws_find myproject)"
+sbatch job.slurm
 ```
+
+In a job script, you can use the same command:
+
+```bash
+cd "$(ws_find myproject)"
+```
+
+!!! warning "Your job must finish before the workspace expires"
+    When you submit a job from a workspace, its `--time` limit must end before the workspace expires. If it does not, `sbatch` rejects the job and tells you how to fix it: extend the workspace, ask for less time, or move to a new workspace. If the workspace expires within 7 days, the job is accepted with a reminder. See [Job Time Limits and Workspace Expiration](../cluster/jobs/running-jobs.md#job-time-limits-and-workspace-expiration).
+
+Tips for planning:
+
+- Give a new workspace enough days for all the jobs you plan to run in it, including time waiting in the queue. The maximum, and the default, is 60 days.
+- Before a long job, run `ws_list` and check `remaining time`.
+- The check looks at the directory you submit from (or `#SBATCH --chdir`). Submit from the workspace your job uses.
 
 See [Using Data in a Job](../cluster/jobs/storage-job.md) for more.
 
 ## Troubleshooting
 
-| Message or problem                                        | What to do                                                                                                                                                              |
-|-----------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Non-existent workspace given                              | Use the name you chose when you created it (`myproject`), not the Id from `ws_list` (`netid-myproject`).                                                                |
-| "not currently a member of lab ... in this login session" | You were added to the lab recently. Log out and log back in, then try again.                                                                                            |
-| `ws_allocate` lists your labs and asks you to try again   | You belong to more than one lab. Add `-F lab_pi_netid`.                                                                                                                 |
-| `available extensions : 0`                                | The workspace was already extended and cannot be extended again. Copy your data to group storage, or create a new workspace.                                            |
-| Extension did not give you more time                      | An extension counts from today. If you asked for fewer days than remained, the workspace was shortened.                                                                 |
-| ws_extend says the workspace can not be extended yet      | Less than 75% of its lifetime has passed. Run the command again on or after the date it shows. Your extension was not used.                                             |
-| You did not get an expiration email                       | Reminders are off by default. Set `-r` and `-m` when you create the workspace. See [Get an Expiration Reminder](#get-an-expiration-reminder).                           |
-| Cannot create files in `/scratch/g/pi_netid`              | Create a workspace with `ws_allocate`, and save files there.                                                                                                            |
-| A workspace expired or was released and you need the data | Restore it within 14 days. See [Restore a Workspace](#restore-a-workspace).                                                                                             |
-| `ws_restore` does not work                                | Create the new workspace first. Then copy the old name exactly as `ws_restore -l` shows it. Do not use the name from `ws_list`. Answer the quick question that appears. |
-| Someone you shared with cannot find your workspace        | Send them the full path from `ws_list`. They cannot list your lab folder, so they need the exact path. Run `ws_share list myproject` to confirm they are listed.        |
+| Message or problem                                         | What to do                                                                                                                                                                                                                   |
+|------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Non-existent workspace given                               | Use the name you chose when you created it (`myproject`), not the Id from `ws_list` (`netid-myproject`).                                                                                                                     |
+| "not currently a member of lab ... in this login session"  | You were added to the lab recently. Log out and log back in, then try again.                                                                                                                                                 |
+| `ws_allocate` lists your labs and asks you to try again    | You belong to more than one lab. Add `-F lab_pi_netid`.                                                                                                                                                                      |
+| `available extensions : 0`                                 | The workspace was already extended and cannot be extended again. Copy your data to group storage, or create a new workspace.                                                                                                 |
+| Extension did not give you more time                       | An extension counts from today. If you asked for fewer days than remained, the workspace was shortened.                                                                                                                      |
+| ws_extend says the workspace can not be extended yet       | Less than 75% of its lifetime has passed. Run the command again on or after the date it shows. Your extension was not used.                                                                                                  |
+| You did not get an expiration email                        | Reminders are off by default. Set `-r` and `-m` when you create the workspace. See [Get an Expiration Reminder](#get-an-expiration-reminder).                                                                                |
+| Cannot create files in `/scratch/g/pi_netid`               | Create a workspace with `ws_allocate`, and save files there.                                                                                                                                                                 |
+| A workspace expired or was released and you need the data  | Restore it within 14 days. See [Restore a Workspace](#restore-a-workspace).                                                                                                                                                  |
+| `ws_restore` does not work                                 | Create the new workspace first. Then copy the old name exactly as `ws_restore -l` shows it. Do not use the name from `ws_list`. Answer the quick question that appears.                                                      |
+| Someone you shared with cannot find your workspace         | Send them the full path from `ws_list`. They cannot list your lab folder, so they need the exact path. Run `ws_share list myproject` to confirm they are listed.                                                             |
+| `JOB REJECTED: workspace ... expires on ...` from `sbatch` | The job would still be running when the workspace expires. Follow one of the fixes in the message. See [Job Time Limits and Workspace Expiration](../cluster/jobs/running-jobs.md#job-time-limits-and-workspace-expiration). |
+| `JOB REJECTED: ... workspace that expired or was released` | Restore the workspace with the steps in the message, then submit from the restored workspace.                                                                                                                                |
+| `WORKSPACE NOTICE: ... expires in N days`                  | Your job was accepted. Extend the workspace when you can, or copy what you need to group storage.                                                                                                                            |
+| `WORKSPACE WARNING: ... is not a workspace`                | Your job was accepted, but it runs outside a workspace. Create a workspace and run your jobs from there.                                                                                                                     |
 
 --8<-- "includes/abbreviations.md"

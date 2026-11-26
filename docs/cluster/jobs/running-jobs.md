@@ -63,14 +63,15 @@ sacct -j jobId # jobId is the job number
 
 The HPC cluster requires a specific job workflow:
 
-1. Copy job input/supporting files from your RGS directory within `/group/PI_NetID/...` to your scratch directory `/scratch/g/PI_NetID`
-2. Submit a job from your `/scratch/...` directory that utilizes the staged job input/supporting files. **You must make sure the job I/O runs in your scratch directory.** The easiest way is to run the sbatch command in your `/scratch/...` directory.
-3. When job finishes, copy results from `/scratch/...` back to `/group/PI_NetID/`....
-4. If there are further computations, continues utilizing the job input/supporting files
-5. When jobs are finished and staged job input/supporting files are no longer needed, delete the job input/supporting files from `/scratch/...`
+1. Create a [workspace](../../storage/workspaces.md) in your lab's scratch space with `ws_allocate`, for example `ws_allocate myproject`. Choose a lifetime long enough for your jobs (up to 60 days).
+2. Copy job input/supporting files from your RGS directory within `/group/PI_NetID/...` into the workspace.
+3. Submit the job from inside the workspace. **You must make sure the job I/O runs in your workspace.** The easiest way is to run the `sbatch` command in the workspace directory, for example `cd $(ws_find myproject)` and then `sbatch job.slurm`.
+4. When the job finishes, copy results from the workspace back to `/group/PI_NetID/...`.
+5. If there are further computations, keep using the files in the same workspace.
+6. When you are done, release the workspace with `ws_release myproject`. If you forget, it expires on its own.
 
 !!! warning
-    Your jobs will fail if you do not follow this procedure. Please note that files in `/scratch/...` that are older than 180 days will be deleted.
+    Your jobs will fail if you do not follow this procedure. `/group` is not available on compute nodes, and you cannot save files directly in `/scratch/g/PI_NetID`, only in a workspace. Workspaces expire, so copy results you want to keep to `/group`. See [Job Time Limits and Workspace Expiration](#job-time-limits-and-workspace-expiration).
 
 ## SLURM Concepts
 
@@ -266,7 +267,10 @@ A time request is **required** and tells SLURM how long your job will run. The `
 ```
 
 !!! tip "Does your job require more than the maximum 7 day time limit?"
-    Email the jobid number and time extension request to {{ support_email }}
+    Email the jobid number and time extension request to {{ support_email }}. Make sure your workspace will outlast the longer job. See [Job Time Limits and Workspace Expiration](#job-time-limits-and-workspace-expiration).
+
+!!! note "Your job must finish before its workspace expires"
+    When you submit a job from a workspace, the job's time limit must end before the workspace expires. Otherwise the job is rejected. See [Job Time Limits and Workspace Expiration](#job-time-limits-and-workspace-expiration).
 
 #### Account
 
@@ -458,5 +462,50 @@ To simplify the process, use the `maxwalltime` command, which provides the maxim
 
 !!! info
     Please note, RCC schedules maintenance windows every first Wednesday of the month from 9PM-12AM.
+
+## Job Time Limits and Workspace Expiration
+
+Workspaces expire, and an expired workspace is removed even if a job is still using it. To protect your jobs, the scheduler checks the workspace a job will run in when you submit it. It works much like a [maintenance window](#job-scheduling-and-maintenance): a job is only accepted if it can finish in time.
+
+The check uses the job's working directory. That is the directory you run `sbatch` from, or the one you set with `#SBATCH --chdir`. Jobs that do not run under `/scratch/g` are not checked, and neither are labs that have not moved to workspaces yet.
+
+| Situation                                                           | What happens                                    |
+|---------------------------------------------------------------------|-------------------------------------------------|
+| The job's time limit ends before the workspace expires              | The job is accepted                             |
+| The workspace expires within 7 days, but the job ends sooner        | The job is accepted, with a `WORKSPACE NOTICE`  |
+| The job's time limit ends after the workspace expires               | The job is rejected (`JOB REJECTED`)            |
+| The workspace has already expired or was released                   | The job is rejected, with steps to restore it   |
+| The job runs in the lab folder, or a folder that is not a workspace | The job is accepted, with a `WORKSPACE WARNING` |
+
+A rejected job prints a message like this, with the commands for your own workspace filled in:
+
+```text
+JOB REJECTED: workspace 'myproject' (owner netid) expires on Fri Dec 18 2026 at 14:05,
+  but this job's time limit could run until Mon Dec 21 2026 at 09:30.
+  The workspace would be removed while the job is still running.
+  Pick one of these and submit again:
+  1. Extend the workspace to 60 days from now, then resubmit:
+       ws_extend -F lab_pi_netid myproject 60
+  2. Ask for less time so the job ends before the workspace does:
+       #SBATCH --time=2-22:00:00   (or sbatch --time=2-22:00:00)
+  3. Move to a new workspace and point your job script at it:
+       ws_allocate -F lab_pi_netid myproject-2 60
+       mv /scratch/g/pi_netid/netid-myproject/* "$(ws_find -F lab_pi_netid myproject-2)"/
+     Then submit from the new workspace and update any paths in your script.
+```
+
+Pick the option that fits your work:
+
+- **Extend the workspace** if you still need it. You can extend once, and only after 75% of its lifetime has passed (day 45 of a 60-day workspace). If it is too early, the message tells you the date. See [Extend a Workspace](../../storage/workspaces.md#extend-a-workspace).
+- **Ask for less time** if your job does not need the full time limit. The suggested time ends a few hours before the workspace expires, to allow for time in the queue.
+- **Move to a new workspace** if the workspace cannot be extended. Remember to update any paths in your job script.
+
+If the workspace belongs to someone else in your lab, the message asks you to have the owner extend it.
+
+!!! tip "Plan ahead"
+    Before a long job or a series of jobs, run `ws_list` and check `remaining time`. A workspace that expires in a few days cannot hold a 7-day job.
+
+!!! note "Jobs that wait in the queue"
+    A job can wait in the queue after it is accepted. When it starts, a warning is printed at the top of its output file if its workspace now expires before the job can finish. Check your output files, and extend the workspace if you see this warning.
 
 --8<-- "includes/abbreviations.md"
