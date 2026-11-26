@@ -74,7 +74,7 @@ The SLURM job script syntax is shown below. Just like previous clusters, every j
 #SBATCH --mail-user=NetID@mcw.edu # NetID is your username
 
 # run the job in your workspace
-cd "$(ws_find myproject)"
+cd "$(ws_find -F lab_PI_NetID myproject)"
 
 echo "Starting at $(date)"
 echo "Job name: ${SLURM_JOB_NAME}, Job ID: ${SLURM_JOB_ID}"

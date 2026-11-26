@@ -276,29 +276,29 @@ To give someone outside your lab access, use `ws_share`. Only the workspace owne
 
 ## Using Workspaces in Jobs
 
-Create the workspace before you submit a job, copy your input data into it, and submit the job from inside it. `ws_find` prints the path of a workspace, so you do not need to type it:
+Create the workspace on a login node before you submit a job, and copy your input data into it. `ws_find` prints the path of a workspace, so you do not need to type it:
 
 ```bash
 ws_allocate myproject
 cp -r /group/pi_netid/work/inputs "$(ws_find myproject)"/
-cd "$(ws_find myproject)"
-sbatch job.slurm
 ```
 
-In a job script, you can use the same command:
+In your job script, change to the workspace before the job's commands:
 
 ```bash
-cd "$(ws_find myproject)"
+cd "$(ws_find -F lab_pi_netid myproject)"
 ```
 
+Then submit the job from the login node as usual with `sbatch job.slurm`.
+
 !!! warning "Your job must finish before the workspace expires"
-    When you submit a job from a workspace, its `--time` limit must end before the workspace expires. If it does not, `sbatch` rejects the job and tells you how to fix it: extend the workspace, ask for less time, or move to a new workspace. If the workspace expires within 7 days, the job is accepted with a reminder. See [Job Time Limits and Workspace Expiration](../cluster/jobs/running-jobs.md#job-time-limits-and-workspace-expiration).
+    When your job uses a workspace, its `--time` limit must end before the workspace expires. If it does not, `sbatch` rejects the job and tells you how to fix it: extend the workspace, ask for less time, or move to a new workspace. If the workspace expires within 7 days, the job is accepted with a reminder. See [Job Time Limits and Workspace Expiration](../cluster/jobs/running-jobs.md#job-time-limits-and-workspace-expiration).
 
 Tips for planning:
 
 - Give a new workspace enough days for all the jobs you plan to run in it, including time waiting in the queue. The maximum, and the default, is 60 days.
 - Before a long job, run `ws_list` and check `remaining time`.
-- The check looks at the directory you submit from (or `#SBATCH --chdir`). Submit from the workspace your job uses.
+- In job scripts, use `ws_find -F lab_pi_netid myproject` or the full `/scratch/g/...` path. The check can see those, but not a path built from a variable or `ws_find` without `-F`.
 
 See [Using Data in a Job](../cluster/jobs/storage-job.md) for more.
 

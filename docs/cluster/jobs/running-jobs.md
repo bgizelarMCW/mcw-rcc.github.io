@@ -65,7 +65,7 @@ The HPC cluster requires a specific job workflow:
 
 1. Create a [workspace](../../storage/workspaces.md) in your lab's scratch space with `ws_allocate`, for example `ws_allocate myproject`. Choose a lifetime long enough for your jobs (up to 60 days).
 2. Copy job input/supporting files from your RGS directory within `/group/PI_NetID/...` into the workspace.
-3. Submit the job from inside the workspace. **You must make sure the job I/O runs in your workspace.** The easiest way is to run the `sbatch` command in the workspace directory, for example `cd $(ws_find myproject)` and then `sbatch job.slurm`.
+3. Submit the job. **You must make sure the job I/O runs in your workspace.** The easiest way is to start your job script with `cd "$(ws_find -F lab_PI_NetID myproject)"`, then submit it from the login node with `sbatch job.slurm`.
 4. When the job finishes, copy results from the workspace back to `/group/PI_NetID/...`.
 5. If there are further computations, keep using the files in the same workspace.
 6. When you are done, release the workspace with `ws_release myproject`. If you forget, it expires on its own.
@@ -270,7 +270,7 @@ A time request is **required** and tells SLURM how long your job will run. The `
     Email the jobid number and time extension request to {{ support_email }}. Make sure your workspace will outlast the longer job. See [Job Time Limits and Workspace Expiration](#job-time-limits-and-workspace-expiration).
 
 !!! note "Your job must finish before its workspace expires"
-    When you submit a job from a workspace, the job's time limit must end before the workspace expires. Otherwise the job is rejected. See [Job Time Limits and Workspace Expiration](#job-time-limits-and-workspace-expiration).
+    When your job uses a workspace, the job's time limit must end before the workspace expires. Otherwise the job is rejected. See [Job Time Limits and Workspace Expiration](#job-time-limits-and-workspace-expiration).
 
 #### Account
 
@@ -467,7 +467,7 @@ To simplify the process, use the `maxwalltime` command, which provides the maxim
 
 Workspaces expire, and an expired workspace is removed even if a job is still using it. To protect your jobs, the scheduler checks the workspace a job will run in when you submit it. It works much like a [maintenance window](#job-scheduling-and-maintenance): a job is only accepted if it can finish in time.
 
-The check uses the job's working directory. That is the directory you run `sbatch` from, or the one you set with `#SBATCH --chdir`. Jobs that do not run under `/scratch/g` are not checked, and neither are labs that have not moved to workspaces yet.
+The check looks at the folder you submit from (or `#SBATCH --chdir`), and at any workspace your job script names with a full `/scratch/g/...` path or with `ws_find -F lab_PI_NetID myproject`. If the script builds the path from a variable, or uses `ws_find` without `-F`, the check cannot see it, so use the `-F` form in job scripts. Jobs that do not use `/scratch/g` are not checked, and neither are labs that have not moved to workspaces yet.
 
 | Situation                                                           | What happens                                    |
 |---------------------------------------------------------------------|-------------------------------------------------|
@@ -506,6 +506,6 @@ If the workspace belongs to someone else in your lab, the message asks you to ha
     Before a long job or a series of jobs, run `ws_list` and check `remaining time`. A workspace that expires in a few days cannot hold a 7-day job.
 
 !!! note "Jobs that wait in the queue"
-    A job can wait in the queue after it is accepted. When it starts, a warning is printed at the top of its output file if its workspace now expires before the job can finish. Check your output files, and extend the workspace if you see this warning.
+    A job can wait in the queue after it is accepted. When it starts, a warning is printed at the top of its output file if the workspace it was submitted from (or its `--chdir`) now expires before the job can finish. Check your output files, and extend the workspace if you see this warning.
 
 --8<-- "includes/abbreviations.md"
