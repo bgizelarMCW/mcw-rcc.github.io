@@ -6,6 +6,14 @@
 
 The AlphaFold 2 workflow has two parts, MSA search which is CPU based, and inference/MD which is GPU based. To maximize resources, split your workflow into two jobs.
 
+The examples below keep their files in a [workspace](../storage/workspaces.md) named `alphatest`. Create it once before you start, and put your `.fasta` file in it:
+
+```bash
+ws_allocate alphatest
+```
+
+The workspace path is `/scratch/g/PI_NetID/NetID-alphatest`, where `PI_NetID` is your PI's username and `NetID` is yours. `ws_find alphatest` prints it.
+
 ### Interactive Job
 
 You should only use interactive jobs for testing/debugging.  Please submit batch jobs otherwise.
@@ -20,11 +28,11 @@ srun --job-name=alphafold_test --ntasks=1 --cpus-per-task=12 --time=8:00:00 --pt
 module load alphafold/2.3.2
 module load python/3.9.1
 
-# start alphafold software, replace PI_NetID with your username
-run_alphafold.py -d $DOWNLOAD_DIR --cpus 12 -f /scratch/g/PI_NetID/alphatest/some.fasta -t 2020-05-14 -o /scratch/g/PI_NetID/alphatest/output --run_feature=1
+# start alphafold software, replace PI_NetID with your PI's username and NetID with yours
+run_alphafold.py -d $DOWNLOAD_DIR --cpus 12 -f /scratch/g/PI_NetID/NetID-alphatest/some.fasta -t 2020-05-14 -o /scratch/g/PI_NetID/NetID-alphatest/output --run_feature=1
 ```
 
-The alphafold software environment is loaded using `module load alphafold/2.3.2` command. AlphaFold 2 reference files are located at `/hpc/refdata/alphafold/2.3`. This is set automatically by the module, so do not change `-d $DOWNLOAD_DIR`. Please make sure to edit `PI_NetID`. The `--run_feature=1` flag causes AlphaFold to run the MSA search only.
+The alphafold software environment is loaded using `module load alphafold/2.3.2` command. AlphaFold 2 reference files are located at `/hpc/refdata/alphafold/2.3`. This is set automatically by the module, so do not change `-d $DOWNLOAD_DIR`. Please make sure to edit `PI_NetID` and `NetID`. The `--run_feature=1` flag causes AlphaFold to run the MSA search only.
 
 Start a GPU job for model inference and MD:
 
@@ -40,7 +48,7 @@ module load python/3.9.1
 export NVIDIA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES
 
 # start alphafold software, replace netid with your username
-run_alphafold.py -d $DOWNLOAD_DIR --cpus 12 -f /scratch/g/PI_NetID/alphatest/some.fasta -t 2020-05-14 -o /scratch/g/PI_NetID/alphatest/output --use_gpu_relax
+run_alphafold.py -d $DOWNLOAD_DIR --cpus 12 -f /scratch/g/PI_NetID/NetID-alphatest/some.fasta -t 2020-05-14 -o /scratch/g/PI_NetID/NetID-alphatest/output --use_gpu_relax
 ```
 
 This second job will use the results of first step. The `--use_gpu_relax` flag will ensure that MD uses the GPU.
@@ -50,7 +58,7 @@ This second job will use the results of first step. The `--use_gpu_relax` flag w
 
 ### Batch Job
 
-Create a file `/scratch/g/PI_NetID/alphatest/alphafold_step1.slurm` for the MSA step. Replace `PI_NetID` with your PI's Username.
+Create a file `/scratch/g/PI_NetID/NetID-alphatest/alphafold_step1.slurm` for the MSA step. Replace `PI_NetID` with your PI's username and `NetID` with yours.
 
 === "alphafold_step1.slurm"
 
@@ -66,16 +74,16 @@ module load alphafold/2.3.2
 module load python/3.9.1
   
 export NVIDIA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES
-run_alphafold.py -d $DOWNLOAD_DIR --cpus 12 -f /scratch/g/PI_NetID/alphatest/some.fasta -t 2020-05-14 -o /scratch/g/PI_NetID/alphatest/output --run_feature=1
+run_alphafold.py -d $DOWNLOAD_DIR --cpus 12 -f /scratch/g/PI_NetID/NetID-alphatest/some.fasta -t 2020-05-14 -o /scratch/g/PI_NetID/NetID-alphatest/output --run_feature=1
 ```
 
 Submit the job:
 
 ```bash
-cd /scratch/g/PI_NetID/alphatest && sbatch alphafold_step1.slurm
+cd /scratch/g/PI_NetID/NetID-alphatest && sbatch alphafold_step1.slurm
 ```
 
-Create a file `/scratch/g/PI_NetID/alphatest/alphafold_step2.slurm` for the inference/MD step.
+Create a file `/scratch/g/PI_NetID/NetID-alphatest/alphafold_step2.slurm` for the inference/MD step.
 
 === "alphafold_step2.slurm"
 
@@ -94,13 +102,13 @@ module load alphafold/2.3.2
 module load python/3.9.1
   
 export NVIDIA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES
-run_alphafold.py -d $DOWNLOAD_DIR --cpus 12 -f /scratch/g/PI_NetID/alphatest/some.fasta -t 2020-05-14 -o /scratch/g/PI_NetID/alphatest/output --use_gpu_relax
+run_alphafold.py -d $DOWNLOAD_DIR --cpus 12 -f /scratch/g/PI_NetID/NetID-alphatest/some.fasta -t 2020-05-14 -o /scratch/g/PI_NetID/NetID-alphatest/output --use_gpu_relax
 ```
 
 Submit the job:
 
 ```bash
-cd /scratch/g/PI_NetID/alphatest && sbatch alphafold_step2.slurm
+cd /scratch/g/PI_NetID/NetID-alphatest && sbatch alphafold_step2.slurm
 ```
 
 ## AlphaFold 3

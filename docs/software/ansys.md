@@ -12,27 +12,28 @@ Fluent should be run from the ANSYS Workbench if possible, as this is the easies
 To get started, setup some file structure. Every time we run a simulation, we should start with a new parent folder, which is `example-job` in this case. Make sure this is meaningful, since it will help you identify your simulations later.
 
 ```bash
-cd /scratch/g/PI_NetID
+ws_allocate fluent
+cd "$(ws_find fluent)"
 mkdir -p example-job/{cas-files,output}
 ```
 
-We created a new folder for our first simulation `example-job` in our group scratch directory. Within that folder, we also created a place to hold our input and output files. Upload the input cas files to the `cas-files` directory.
+We created a [workspace](../storage/workspaces.md) named `fluent` in our lab's scratch space, and a new folder for our first simulation `example-job` inside it. The workspace path is `/scratch/g/PI_NetID/NetID-fluent`, where `NetID` is your username. Within that folder, we also created a place to hold our input and output files. Upload the input cas files to the `cas-files` directory.
 
-We need a journal file to tell Fluent how to proceed. Create a file `/scratch/g/PI_NetID/example-job/fluent-test.jou`.
+We need a journal file to tell Fluent how to proceed. Create a file `/scratch/g/PI_NetID/NetID-fluent/example-job/fluent-test.jou`.
 
 === "fluent-test.jou"
 
 ```txt
-/file/read-case-data "/scratch/g/PI_NetID/example-job/cas-files/test_fluent_case"
+/file/read-case-data "/scratch/g/PI_NetID/NetID-fluent/example-job/cas-files/test_fluent_case"
 /solve/iterate 1000
-/file/write-case "/scratch/g/PI_NetID/example-job/output/test_fluent_case.cas"
-/file/write-data "/scratch/g/PI_NetID/example-job/output/test_fluent_case.data"
+/file/write-case "/scratch/g/PI_NetID/NetID-fluent/example-job/output/test_fluent_case.cas"
+/file/write-data "/scratch/g/PI_NetID/NetID-fluent/example-job/output/test_fluent_case.data"
 /parallel timer usage
 /exit
 yes
 ```
 
-We also need a job script. Create a file `/scratch/g/PI_NetID/example-job/job-script.slurm`. Replace PI_NetID with your PI's username.
+We also need a job script. Create a file `/scratch/g/PI_NetID/NetID-fluent/example-job/job-script.slurm`. Replace `PI_NetID` with your PI's username and `NetID` with yours.
 
 === "job-script.slurm"
 
@@ -60,8 +61,8 @@ time fluent -g 3ddp -t${SLURM_NTASKS} -i fluent-test.jou -cnf=${FL_SCHEDULER_HOS
 Submit the job:
 
 ```bash
-cd /scratch/g/PI_NetID/example-job
+cd /scratch/g/PI_NetID/NetID-fluent/example-job
 sbatch job-script.slurm
 ```
 
-The example above is a job request for 2 nodes with 16 cores per node. Please make sure to insert your PI's username for `PI_NetID`.
+The example above is a job request for 2 nodes with 16 cores per node. Please make sure to insert your PI's username for `PI_NetID` and your username for `NetID`. The workspace must not expire before the job's time limit ends, or the job is rejected.

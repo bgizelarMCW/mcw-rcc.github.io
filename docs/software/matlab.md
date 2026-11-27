@@ -43,11 +43,16 @@ end
 
 ### Add Cluster Profile
 
+MATLAB stores its job files in your lab's scratch space, in a [workspace](../storage/workspaces.md). Before you start, log in to the cluster and create one, for example `ws_allocate matlab`. Its path is `/scratch/g/PI_NetID/NetID-matlab`, where `PI_NetID` is your PI's username and `NetID` is yours. `ws_find matlab` prints it.
+
 1. Launch the MATLAB application and select **Home > Parallel > Create and Manage Clusters** to open the **Cluster Profile Manager** window. Select **Import**, browse to the location of the `matlab-parallel-slurm-plugin-{{ version }}` folder, and select the `HPC_Cluster.mlsettings` file.
 2. Locate **HPC Cluster** profile in the Cluster Profile Manager and select **Edit**.
     - Locate the **Scheduler Plugin** section of the profile. Set the **PluginScriptsLocation** property to location of the **matlab-parallel-slurm-plugin-{{ version }}** folder.
-    - Locate the **Additional Properties** table. Set the **RemoteJobStorageLocation** property to `/scratch/g/PI_NetID`, where `PI_NetID` is your PI's username. Set the **Username** property to your MCW username.  
+    - Locate the **Additional Properties** table. Set the **RemoteJobStorageLocation** property to your workspace path, for example `/scratch/g/PI_NetID/NetID-matlab`. Set the **Username** property to your MCW username.  
 3. Select **Done** editing and set the new profile as default.
+
+!!! note "Workspaces expire"
+    A workspace lasts up to 60 days and can be extended once. When it is close to expiring, create a new workspace and update **RemoteJobStorageLocation** to the new path. Jobs submitted to a workspace that expires before the job's time limit ends are rejected.
 
 ### Validation
 

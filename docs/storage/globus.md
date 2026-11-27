@@ -14,6 +14,9 @@ These collections map directly to your RCC directories:
 - **Group directories** (`/group/PI/work`)
 - **Scratch directories** (`/scratch/g/PI`)
 
+!!! tip "Transfer scratch data into a workspace"
+    Scratch is organized into [workspaces](workspaces.md). Create a workspace on the cluster with `ws_allocate` first, then transfer into its folder, for example `/scratch/g/PI/NetID-myproject`. You cannot save files directly in `/scratch/g/PI`.
+
 This guide walks you through logging in, finding the MCW RCC collections, and authorizing access the first time you use them.
 
 ### Authenticate
