@@ -130,7 +130,7 @@ Files you add later are shared automatically. Sharing ends when the workspace ex
 
 The **Shared with me** tab lists workspaces that people outside your lab shared with you, or with a group you are in. It shows the owner and your access. Click **Open in Files** to open one.
 
-The list is updated once a night, so a workspace shared with you today may not show up until tomorrow. You do not have to wait: open the path the owner sent you in **Files**, or `cd` to it in a terminal.
+The list is updated every 10 minutes, so a workspace shared with you shows up there within about 10 minutes. You do not have to wait: open the path the owner sent you in **Files**, or `cd` to it in a terminal.
 
 ![Shared with me tab](../_static/img/wsd-shared-with-me.png)
 
@@ -177,7 +177,7 @@ On the command line, `ws_restore` asks a quick question to check you are a perso
 | "can not be extended yet"                                     | It is too early to extend. The card shows the first date you can. Your extension was not used.                                |
 | "No RCC account named ... was found"                          | Check the spelling of the username. The person needs an [RCC account](../cluster/accounts.md) before you can share with them. |
 | Someone you shared with cannot find the workspace             | Send them the full path from the card. They cannot browse your lab folder.                                                    |
-| A workspace shared with you is not under Shared with me       | The list is updated nightly. Open the path the owner sent you in **Files** in the meantime.                                   |
+| A workspace shared with you is not under Shared with me       | The list is updated every 10 minutes. Open the path the owner sent you in **Files** in the meantime.                          |
 | Something else went wrong                                     | The red message box shows the error and the command line equivalent. Email <help-rcc@mcw.edu> with both.                      |
 
 --8<-- "includes/abbreviations.md"
