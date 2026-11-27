@@ -66,6 +66,10 @@ To upload a folder, drag and drop the folder from your local desktop to your OnD
 
 If you're off-campus, you'll be accessing OnDemand via Citrix browser. To upload a folder, drag and drop the folder from your Windows File Explorer (Citrix app) to your OnDemand Files app (Citrix browser window). Again, as you drag the folder to the window, your cursor should show a copy indicator.
 
+## Workspace Dashboard
+
+The **Workspace Dashboard** manages your [scratch workspaces](../../storage/workspaces.md) in `/scratch/g`. From the **Dashboard** menu, select **Workspaces > Workspace Dashboard**, or click its tile on the front page. You can create, extend, share, release, and restore workspaces, and see who each workspace is shared with. Each action also shows the command line equivalent. See the [Workspace Dashboard guide](../../storage/workspace-dashboard.md).
+
 ## Open Job Composer
 
 Jobs can be created, submitted, and monitored via the Open Job Composer tool. This is an alternative to creating and submitting job scripts in the command line.

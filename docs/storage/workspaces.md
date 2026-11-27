@@ -8,6 +8,9 @@ Scratch storage is organized into workspaces. A workspace is a folder with an ex
 
 Your lab's scratch space is `/scratch/g/pi_netid`, where `pi_netid` is your PI's MCW username. You do not save files directly in that folder. You create a workspace inside it and work there.
 
+!!! tip "Prefer a web page? Use the Workspace Dashboard"
+    Everything on this page can also be done in your web browser. In [Open OnDemand](https://ondemand.rcc.mcw.edu){:target="_blank"}, select **Workspaces > Workspace Dashboard**. It lists your workspaces with the days left and who can see them, and lets you create, extend, share, release, and restore them with a few clicks. It also shows the command line equivalent of each action, so you can learn the commands as you go. See the [Workspace Dashboard guide](workspace-dashboard.md).
+
 ## Quick Reference
 
 | Task                     | Command                        | If you are in more than one lab            |
@@ -82,7 +85,7 @@ RCC does not send expiration reminders by default. To get an email before your w
 ws_allocate -r 7 -m username@mcw.edu myproject
 ```
 
-This example sends a reminder 7 days before the workspace expires.
+This example starts reminders 7 days before the workspace expires. From then on, a reminder is sent every night until the workspace expires or you extend it.
 
 !!! warning "You cannot add a reminder later without using your extension"
     Reminders can only be set when you create a workspace, or when you extend it. Adding or changing a reminder on an existing workspace counts as your one extension. If you want to keep your extension, set the reminder when you create the workspace.
@@ -163,7 +166,7 @@ error: you can extend it on or after Thu Jan  7 20:01:38 2027 (in 42 days).
 error: workspace was not extended and no extension was used.
 ```
 
-Run the same `ws_extend` command again on or after that date.
+Run the same `ws_extend` command again on or after that date. The [Workspace Dashboard](workspace-dashboard.md) shows this date on each workspace's **Extend** button.
 
 ## Release a Workspace
 
@@ -265,6 +268,10 @@ To give someone outside your lab access, use `ws_share`. Only the workspace owne
 | Check that sharing is set up correctly | `ws_share check myproject`                    |
 
 `jdoe` is the other person's MCW username. Use the workspace name you chose (`myproject`), not the Id from `ws_list`.
+
+- You can only share with people who have an [RCC account](../cluster/accounts.md). An MCW username alone is not enough.
+- To share with everyone in another lab, share with that lab's group. It is `sg-` followed by the PI's MCW username, such as `sg-otherlab`.
+- You can also share, see who has access, and remove access in the [Workspace Dashboard](workspace-dashboard.md#share-a-workspace).
 
 - **Read-only** lets them open and copy your files and list your folders. **Read and write** also lets them create, change, and delete files.
 - To change someone from read-only to read and write, or back, run `ws_share share` again with or without `--readwrite`. It replaces their old access.
