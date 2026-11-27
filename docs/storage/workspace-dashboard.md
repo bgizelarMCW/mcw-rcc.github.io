@@ -55,7 +55,7 @@ The buttons on the card:
 2. Type a **Name**, such as `rnaseq-run2`. The full path is shown to the left of the box. Use letters, numbers, dots, dashes, and underscores.
 3. Choose **How many days**, up to 60.
 4. Leave **Let my lab read and write it** ticked to share it with your lab, which is the usual choice. Untick it to keep the workspace private. You can still share a private workspace with people later.
-5. Optional: tick **Email me before it expires**, enter your email address, and choose how many days before. RCC does not send reminders unless you ask for one here.
+5. Optional: tick **Email me before it expires**. Starting the number of days shown next to the box (usually 7) before the workspace expires, you get a reminder at your MCW email address every night until it expires. RCC does not send reminders unless you tick this box.
 6. Optional: add a **Note** to remind you what the workspace is for. It is shown on the card.
 7. Click **Create workspace**.
 

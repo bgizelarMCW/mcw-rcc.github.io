@@ -81,7 +81,7 @@ RCC does not send expiration reminders by default. To get an email before your w
 ws_allocate -r 7 -m username@mcw.edu myproject
 ```
 
-This example sends a reminder 7 days before the workspace expires.
+This example starts reminders 7 days before the workspace expires. From then on, a reminder is sent every night until the workspace expires or you extend it.
 
 !!! warning "You cannot add a reminder later without using your extension"
     Reminders can only be set when you create a workspace, or when you extend it. Adding or changing a reminder on an existing workspace counts as your one extension. If you want to keep your extension, set the reminder when you create the workspace.
