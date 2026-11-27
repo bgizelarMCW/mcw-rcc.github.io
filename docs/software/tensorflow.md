@@ -55,13 +55,16 @@ This is an example of running a Python script in a SLURM batch job.
     #SBATCH --output=%x-%j.out
 
     module load tensorflow
-    python /scratch/g/pi_netid/learning-ml.py >> output.log  
+    python learning-ml.py >> output.log  
     ```
 <!-- markdownlint-enable MD046 -->
 
-Save these scripts to your scratch directory, and submit the job:
+Save both files in a [workspace](../storage/workspaces.md), and submit the job from there:
 
 ```bash
+ws_allocate tf-test
+cd "$(ws_find tf-test)"
+# save learning-ml.py and learning-ml.slurm here
 sbatch learning-ml.slurm
 ```
 

@@ -66,7 +66,7 @@ The buttons on the card:
 
 ## Extend a Workspace
 
-You can extend a workspace once 75% of its current time has passed, or when 7 days or fewer are left, whichever comes first. For a 60-day workspace, that is day 45. Each workspace can be extended once. See [When You Can Extend](workspaces.md#when-you-can-extend).
+{{ ws_extend_rule }} See [When You Can Extend](workspaces.md#when-you-can-extend).
 
 The **Extend** button on the card tells you where you stand:
 

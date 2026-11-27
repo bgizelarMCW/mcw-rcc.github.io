@@ -15,6 +15,12 @@ Size     Used       Avail      Use%     File
 25TB     5TB        25TB       20%      /scratch/g/pi/
 ```
 
+## Freeing Scratch Space
+
+Scratch is organized into [workspaces](workspaces.md). When you are done with a workspace, copy what you want to keep to `/group` and release it with `ws_release myproject`. A released workspace is kept for 14 days in case you need it back, and it still counts against your lab's scratch quota during that time. To free the space right away, use `ws_release --delete-data myproject`. This permanently deletes the data and cannot be undone.
+
+Run `ws_list` to see your workspaces and how much time each has left.
+
 ## Finding Large Files and Directories
 
 Several tools exist to help identify file size and type. Here we discuss use of `du`.

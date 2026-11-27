@@ -33,6 +33,17 @@ Size     Used       Avail      Use%     File
 25TB     5TB        25TB       20%      /scratch/g/pi/
 ```
 
+### Create a workspace
+
+Jobs read and write their files in scratch storage, because `/group` is not available on compute nodes. Scratch is organized into [workspaces](../storage/workspaces.md), folders with an expiration date (60 days by default). Create a workspace on a login node and copy your input data into it:
+
+```bash
+ws_allocate myproject
+cp -r /group/PI_NetID/work/mydata "$(ws_find myproject)"/
+```
+
+`ws_find myproject` prints the workspace path, for example `/scratch/g/PI_NetID/NetID-myproject`.
+
 ## Transferring Files
 
 Most users will need to transfer files to cluster storage. Several methods are available depending on your need. These include Open OnDemand, SSH (command-line), and desktop client software. Please see the [file transfer guide](../storage/file-transfer.md) for details.
@@ -62,6 +73,9 @@ The SLURM job script syntax is shown below. Just like previous clusters, every j
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=NetID@mcw.edu # NetID is your username
 
+# run the job in your workspace
+cd "$(ws_find -F lab_PI_NetID myproject)"
+
 echo "Starting at $(date)"
 echo "Job name: ${SLURM_JOB_NAME}, Job ID: ${SLURM_JOB_ID}"
 echo "I have ${SLURM_CPUS_ON_NODE} CPUs on compute node $(hostname -s)"
@@ -69,11 +83,13 @@ echo "I have ${SLURM_CPUS_ON_NODE} CPUs on compute node $(hostname -s)"
 
 ### Submit the job
 
-Now I can submit my example job:
+Now I can submit my example job from the login node:
 
 ```bash
 sbatch test-job.slurm
 ```
+
+The job's `--time` must end before the workspace expires. See [Workspaces](../storage/workspaces.md#using-workspaces-in-jobs).
 
 Then I can check my job status:
 

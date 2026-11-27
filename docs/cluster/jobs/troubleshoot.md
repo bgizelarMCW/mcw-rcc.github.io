@@ -31,13 +31,19 @@ The reason listed for our example job is one of several that SLURM provides. Ple
 !!! tip "When to contact help"
     It is not possible to provide an exhaustive table of scenarios, reasons, and guidance here. When in doubt, please feel free to contact {{ support_email }}.
 
+## Job rejected at submission
+
+If `sbatch` prints `JOB REJECTED` and no job number, the job was not submitted. This happens when you submit from a [workspace](../../storage/workspaces.md) and the job's time limit would end after the workspace expires, or when the workspace has already expired. The message lists the fixes that apply to your workspace: extend it, ask for less time with `--time`, or move to a new workspace. Pick one and submit again. See [Job Time Limits and Workspace Expiration](running-jobs.md#job-time-limits-and-workspace-expiration).
+
+A `WORKSPACE NOTICE` or `WORKSPACE WARNING` does not stop your job. It tells you the workspace expires soon, or that the job is not running in a workspace.
+
 ## Job failed immediately
 
 Many issues can cause a job to fail immediately. By immediately, we mean the job starts and finishes without producing any useful output. Often there is an error listed in the job output file. The output file is named according to your job name, or can have a specific syntax based on your `#SBATCH --output` option. Most often we find the job output file is something like `slurm-12345.out`, where **12345** is the jobId number.
 
-Incorrect file names or paths are the most common source of immediate job failure. You will see a specific error in your output file with the syntax `command: /file/path: No such file or directory`. This indicates that your job is trying to manipulate a file or directory that does not exist. Most often this is a simple typo error, but could also be caused by trying to use files in `/group`, which is not available on compute nodes. We suggest to double check the file names and paths, and then resubmit. If the issue persists, contact {{ support_email }}.
+Incorrect file names or paths are the most common source of immediate job failure. You will see a specific error in your output file with the syntax `command: /file/path: No such file or directory`. This indicates that your job is trying to manipulate a file or directory that does not exist. Most often this is a simple typo error, but could also be caused by trying to use files in `/group`, which is not available on compute nodes, or files in a workspace that has expired. Check `ws_list` to see whether the workspace still exists. We suggest to double check the file names and paths, and then resubmit. If the issue persists, contact {{ support_email }}.
 
-Storage limits can also cause this issue. Every user has access to at least three storage paths including `/home/netId`, `/group/pi_netId`, and `/scratch/g/pi_netId`. Each of these spaces has a finite limit according to our [storage guide](../../storage/rcc-storage.md). Your job should be using `/scratch` for input/output and will fail immediately if your scratch quota is 100% full. You can find your available storage paths and quotas with the `mydisks` command.
+Storage limits can also cause this issue. Every user has access to at least three storage paths including `/home/netId`, `/group/pi_netId`, and `/scratch/g/pi_netId`. Each of these spaces has a finite limit according to our [storage guide](../../storage/rcc-storage.md). Your job should be using a workspace in `/scratch` for input/output and will fail immediately if your scratch quota is 100% full. A job that writes directly in `/scratch/g/pi_netId`, instead of a workspace, will also fail with `Permission denied`. Released and expired workspaces count against your quota for 14 days, so use `ws_release --delete-data` if you need the space back right away. You can find your available storage paths and quotas with the `mydisks` command.
 
 ```txt
 $ mydisks
