@@ -54,6 +54,7 @@ nav = [
   {"Data Storage" = [
     "storage/rcc-storage.md",
     "storage/workspaces.md",
+    "storage/workspace-dashboard.md",
     "storage/paid-storage.md",
     "storage/ref-data.md",
     "storage/mcw-storage.md",

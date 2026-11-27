@@ -4,6 +4,9 @@ Scratch storage is organized into workspaces. A workspace is a folder with an ex
 
 Your lab's scratch space is `/scratch/g/pi_netid`, where `pi_netid` is your PI's MCW username. You do not save files directly in that folder. You create a workspace inside it and work there.
 
+!!! tip "Prefer a web page? Use the Workspace Dashboard"
+    Everything on this page can also be done in your web browser. In [Open OnDemand](https://ondemand.rcc.mcw.edu){:target="_blank"}, select **Workspaces > Workspace Dashboard**. It lists your workspaces with the days left and who can see them, and lets you create, extend, share, release, and restore them with a few clicks. It also shows the command line equivalent of each action, so you can learn the commands as you go. See the [Workspace Dashboard guide](workspace-dashboard.md).
+
 ## Quick Reference
 
 | Task                     | Command                        | If you are in more than one lab            |
@@ -27,7 +30,7 @@ Your lab's scratch space is `/scratch/g/pi_netid`, where `pi_netid` is your PI's
 
 - A workspace lasts 60 days by default. 60 days is also the maximum.
 - You can extend each workspace once, for up to 60 days.
-- You can extend only after 75% of the workspace's lifetime has passed. For a 60-day workspace, that is day 45. See [When You Can Extend](#when-you-can-extend).
+- You can extend a workspace once 75% of its current time has passed, or when 7 days or fewer are left, whichever comes first. For a 60-day workspace, that is day 45. See [When You Can Extend](#when-you-can-extend).
 - An extension counts from the day you run it, not from the old expiration date.
 - Asking for fewer days than the workspace has left shortens it. A shorter request does not use up your extension.
 - Your lab group can read and write your workspace by default.
@@ -141,23 +144,24 @@ ws_extend -F lab_pi_netid myproject 60
 
 ### When You Can Extend
 
-You can extend a workspace only after 75% of its current lifetime has passed. The lifetime counts from when you created the workspace to its expiration date.
+You can extend a workspace once 75% of its current time has passed, or when 7 days or fewer are left, whichever comes first. The time counts from when you created the workspace to its expiration date.
 
 | Workspace lifetime | You can extend from |
 |--------------------|---------------------|
 | 60 days            | day 45              |
 | 30 days            | day 23              |
-| 8 days             | day 6               |
+| 20 days            | day 13              |
+| 7 days or less     | right away          |
 
 If you try earlier, nothing changes and your extension is not used. The message tells you the first date you can extend:
 
 ```text
-error: workspace can not be extended yet, 75% of its current duration has to be elapsed first.
+error: workspace can not be extended yet, 75% of its current duration has to be elapsed first, or less than 7 days must remain.
 error: you can extend it on or after Tue Dec  1 20:01:38 2026 (in 6 days).
 error: workspace was not extended and no extension was used.
 ```
 
-Run the same `ws_extend` command again on or after that date.
+Run the same `ws_extend` command again on or after that date. The [Workspace Dashboard](workspace-dashboard.md) shows this date on each workspace's **Extend** button.
 
 ## Release a Workspace
 
@@ -260,6 +264,10 @@ To give someone outside your lab access, use `ws_share`. Only the workspace owne
 
 `jdoe` is the other person's MCW username. Use the workspace name you chose (`myproject`), not the Id from `ws_list`.
 
+- You can only share with people who have an [RCC account](../cluster/accounts.md). An MCW username alone is not enough.
+- To share with everyone in another lab, share with that lab's group. It is `sg-` followed by the PI's MCW username, such as `sg-otherlab`.
+- You can also share, see who has access, and remove access in the [Workspace Dashboard](workspace-dashboard.md#share-a-workspace).
+
 - **Read-only** lets them open and copy your files and list your folders. **Read and write** also lets them create, change, and delete files.
 - To change someone from read-only to read and write, or back, run `ws_share share` again with or without `--readwrite`. It replaces their old access.
 - Files and folders you add later are shared automatically. Changing permissions with `chmod` does not remove the sharing.
@@ -290,7 +298,7 @@ See [Using Data in a Job](../cluster/jobs/storage-job.md) for more.
 | `ws_allocate` lists your labs and asks you to try again   | You belong to more than one lab. Add `-F lab_pi_netid`.                                                                                                                 |
 | `available extensions : 0`                                | The workspace was already extended and cannot be extended again. Copy your data to group storage, or create a new workspace.                                            |
 | Extension did not give you more time                      | An extension counts from today. If you asked for fewer days than remained, the workspace was shortened.                                                                 |
-| ws_extend says the workspace can not be extended yet      | Less than 75% of its lifetime has passed. Run the command again on or after the date it shows. Your extension was not used.                                             |
+| ws_extend says the workspace can not be extended yet      | It is too early. Run the command again on or after the date it shows. Your extension was not used.                                                                      |
 | You did not get an expiration email                       | Reminders are off by default. Set `-r` and `-m` when you create the workspace. See [Get an Expiration Reminder](#get-an-expiration-reminder).                           |
 | Cannot create files in `/scratch/g/pi_netid`              | Create a workspace with `ws_allocate`, and save files there.                                                                                                            |
 | A workspace expired or was released and you need the data | Restore it within 14 days. See [Restore a Workspace](#restore-a-workspace).                                                                                             |
