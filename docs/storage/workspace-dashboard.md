@@ -16,7 +16,7 @@ If you belong to more than one lab, buttons with your labs' names appear above t
 
 If your lab has not moved to workspaces yet, the dashboard says so. Keep using your lab's regular `/scratch/g/pi_netid` folder from the **Files** menu until RCC lets your lab know it is moving. A few labs keep a regular folder for good; the dashboard lists those as *Staying on a regular /scratch/g folder*.
 
-![Workspace Dashboard, My workspaces tab](../_static/img/wsd-overview.png)
+![Workspace Dashboard, My workspaces tab](../_static/img/wsd-overview.png){ width="640" }
 
 ## The Tabs
 
@@ -59,7 +59,7 @@ The buttons on the card:
 6. Optional: add a **Note** to remind you what the workspace is for. It is shown on the card.
 7. Click **Create workspace**.
 
-![New workspace form](../_static/img/wsd-new.png)
+![New workspace form](../_static/img/wsd-new.png){ width="560" }
 
 !!! note "Set the reminder now"
     A reminder can only be added for free when you create a workspace. Adding one later uses the workspace's one extension. See [Get an Expiration Reminder](workspaces.md#get-an-expiration-reminder).
@@ -80,7 +80,7 @@ To extend:
 2. Choose the new time left, counted from today. 60 days is the most.
 3. Click **Extend**.
 
-![Extend form](../_static/img/wsd-extend.png)
+![Extend form](../_static/img/wsd-extend.png){ width="420" }
 
 You can also extend a lab member's workspace from the **Lab workspaces** tab if they let the lab read and write it. This is useful when the owner is away and a shared workspace is about to expire.
 
@@ -102,7 +102,7 @@ Your lab can already use your workspace, as shown under **Lab access**. Use **Sh
 5. Click **Share**.
 6. Send them the path from the **Send this path** box. Click **Copy** next to the path, or next to the link that opens the workspace in OnDemand Files.
 
-![Share page after sharing with rkumar](../_static/img/wsd-share.png)
+![Share page after sharing with rkumar](../_static/img/wsd-share.png){ width="640" }
 
 !!! warning "Always send the full path"
     People outside your lab cannot list your lab's `/scratch/g/pi_netid` folder, so they will not find your workspace by browsing. They need the exact path, such as `/scratch/g/jsmith/netid-rnaseq`. They can `cd` straight into it, or open it in Files.
@@ -132,7 +132,7 @@ The **Shared with me** tab lists workspaces that people outside your lab shared 
 
 The list is updated every 10 minutes, so a workspace shared with you shows up there within about 10 minutes. You do not have to wait: open the path the owner sent you in **Files**, or `cd` to it in a terminal.
 
-![Shared with me tab](../_static/img/wsd-shared-with-me.png)
+![Shared with me tab](../_static/img/wsd-shared-with-me.png){ width="640" }
 
 ## Release a Workspace
 
@@ -147,7 +147,7 @@ The workspace disappears from its path right away. You can restore it from the *
 !!! danger "Also delete all files now"
     Ticking **Also delete all files now** deletes the files right away, to free up your lab's quota. They **cannot be restored**, not from **Recently expired** and not by RCC staff. You must also tick **I understand the files can not be recovered**. Copy anything you need to [group storage](rcc-storage.md#group) first.
 
-![Release form with Also delete all files now ticked](../_static/img/wsd-release.png)
+![Release form with Also delete all files now ticked](../_static/img/wsd-release.png){ width="420" }
 
 ## Restore a Workspace
 
@@ -160,7 +160,7 @@ A workspace that expired or was released can be restored for 14 days.
     - **Into my existing workspace**: pick one of your workspaces.
 4. Click **Restore**.
 
-![Restore form](../_static/img/wsd-restore.png)
+![Restore form](../_static/img/wsd-restore.png){ width="420" }
 
 The files are put in a folder inside the workspace you chose. The folder has the old workspace's name with a number added, for example `/scratch/g/jsmith/netid-old-run-restored/netid-old-run-1795570887`. Move or copy the files from there.
 
