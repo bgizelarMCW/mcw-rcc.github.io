@@ -14,7 +14,7 @@ The dashboard runs the same `ws_*` commands described in the [Scratch Workspaces
 
 If you belong to more than one lab, buttons with your labs' names appear above the tabs. Click a lab to switch to it. Everything on the page applies to the lab that is highlighted.
 
-If your lab has not moved to workspaces yet, the dashboard says so. Keep using your lab's regular `/scratch/g/pi_netid` folder from the **Files** menu until RCC lets your lab know it is moving.
+If your lab has not moved to workspaces yet, the dashboard says so. Keep using your lab's regular `/scratch/g/pi_netid` folder from the **Files** menu until RCC lets your lab know it is moving. A few labs keep a regular folder for good; the dashboard lists those as *Staying on a regular /scratch/g folder*.
 
 ![Workspace Dashboard, My workspaces tab](../_static/img/wsd-overview.png)
 
@@ -33,10 +33,10 @@ The number on each tab is how many items it has.
 
 Each workspace is shown as a card.
 
-- **Days left** is the badge in the top right corner. It is green with more than 14 days left, yellow with 7 to 14 days, and red with less than 7 days. The bar under the path shows how much of the workspace's time is left.
+- **Days left** is the badge in the top right corner. It is green with more than 14 days left, yellow with 7 to 14 days, and red with less than 7 days. On the last day it counts hours instead, such as *3 hours left*. Hover over it to see the exact expiry time. The bar under the path shows how much of the workspace's time is left.
 - **The path**, such as `/scratch/g/jsmith/netid-rnaseq`, is the folder to use in your job scripts. Click **Copy** to copy it.
 - **Expires**, **Created**, and **Extensions left** come from `ws_list`.
-- **Who can see it** shows what your lab can do. *Lab can read and write*, the default, means everyone in your lab can open, add, change, and delete files. *Lab can read* means your lab can open and copy files, but not change them. *Only you* means the workspace is private.
+- **Lab access** shows what your lab can do. *Read and write*, the default, means everyone in your lab can open, add, change, and delete files. *Read only* means your lab can open and copy files, but not change them. *No access* means the workspace is private to you and anyone listed under **Shared with**.
 - **Shared with** lists the people and groups outside your lab that you shared it with, and whether each has *read* or *read/write* access. It is not shown when the workspace is not shared.
 
 The buttons on the card:
@@ -84,11 +84,11 @@ To extend:
 
 You can also extend a lab member's workspace from the **Lab workspaces** tab if they let the lab read and write it. This is useful when the owner is away and a shared workspace is about to expire.
 
-The command line equivalent for an extension is shown as `ws_allocate -x ...`. It does the same as `ws_extend`.
+The **Extend** form shows the command line equivalent, such as `ws_extend -F lab_jsmith rnaseq 30`. For a lab member's workspace it shows `ws_allocate -x ... -u <owner>` instead, because `ws_extend` cannot extend someone else's workspace.
 
 ## Share a Workspace
 
-Your lab can already use your workspace, as shown under **Who can see it**. Use **Share...** to give access to people or groups **outside your lab**. Only the owner of a workspace can share it.
+Your lab can already use your workspace, as shown under **Lab access**. Use **Share...** to give access to people or groups **outside your lab**. Only the owner of a workspace can share it.
 
 !!! important "You can only share with RCC account holders"
     The person you share with must have an [RCC account](../cluster/accounts.md). An MCW username is not enough. If they do not have an account, the dashboard says `No RCC account named '...' was found`. Ask them to request an account first.
@@ -119,7 +119,7 @@ The **Who has access** list shows everyone you shared the workspace with, and wh
 
 - **Change access:** share with the same person or group again and choose the other access. It replaces the old access.
 - **Remove one:** click **Remove** next to the person or group.
-- **Remove everyone:** click **Remove everyone**. Your lab keeps its access.
+- **Remove everyone:** click **Remove everyone**, check the list of who will lose access, and confirm. Your lab keeps its access.
 
 Files you add later are shared automatically. Sharing ends when the workspace expires or is released.
 
@@ -153,7 +153,7 @@ The workspace disappears from its path right away. You can restore it from the *
 
 A workspace that expired or was released can be restored for 14 days.
 
-1. Open the **Recently expired** tab. The **Restorable until** column shows the last day you can restore each one.
+1. Open the **Recently expired** tab. The **Restorable until** column shows the last day and time you can restore each one. If two entries have the same name, the **Expired or released** time tells them apart.
 2. Click **Restore...** next to the workspace.
 3. Choose where to put the files:
     - **Into a new workspace named**: type a name. The dashboard creates the workspace for you.
