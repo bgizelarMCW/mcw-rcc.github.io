@@ -68,7 +68,11 @@ If you're off-campus, you'll be accessing OnDemand via Citrix browser. To upload
 
 ## Workspace Dashboard
 
-The **Workspace Dashboard** manages your [scratch workspaces](../../storage/workspaces.md) in `/scratch/g`. From the **Dashboard** menu, select **Workspaces > Workspace Dashboard**, or click its tile on the front page. You can create, extend, share, release, and restore workspaces, and see who each workspace is shared with. Each action also shows the command line equivalent. See the [Workspace Dashboard guide](../../storage/workspace-dashboard.md).
+The **Workspace Dashboard** is the easy way to manage your [scratch workspaces](../../storage/workspaces.md) in `/scratch/g`, with no command line needed. From the **Dashboard** menu, select **Workspaces > Workspace Dashboard**, or click its tile on the front page.
+
+[Open the Workspace Dashboard](https://ondemand.rcc.mcw.edu/pun/sys/workspace-dashboard){ .md-button .md-button--primary target="_blank" rel="noopener" }
+
+Each workspace is shown as a card with its path, expiry date, and days left. You can create, extend, share, release, and restore workspaces, turn on expiry reminder emails, see who each workspace is shared with, and find workspaces others shared with you. As you fill in a form, the dashboard shows the matching `ws_*` command, so you can learn the command line as you go. See the [Workspace Dashboard guide](../../storage/workspace-dashboard.md).
 
 ## Open Job Composer
 

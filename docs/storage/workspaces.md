@@ -8,8 +8,31 @@ Scratch storage is organized into workspaces. A workspace is a folder with an ex
 
 Your lab's scratch space is `/scratch/g/pi_netid`, where `pi_netid` is your PI's MCW username. You do not save files directly in that folder. You create a workspace inside it and work there.
 
-!!! tip "Prefer a web page? Use the Workspace Dashboard"
-    Everything on this page can also be done in your web browser. In [Open OnDemand](https://ondemand.rcc.mcw.edu){:target="_blank"}, select **Workspaces > Workspace Dashboard**. It lists your workspaces with the days left and who can see them, and lets you create, extend, share, release, and restore them with a few clicks. It also shows the command line equivalent of each action, so you can learn the commands as you go. See the [Workspace Dashboard guide](workspace-dashboard.md).
+## Workspace Dashboard in Open OnDemand
+
+Prefer clicking to typing? The **Workspace Dashboard** does everything on this page in your web browser. It is the easiest way to manage your workspaces, and it runs the same `ws_*` commands for you, as you. A workspace you create in the dashboard shows up in `ws_list`, and one you create on the command line shows up in the dashboard.
+
+[Open the Workspace Dashboard](https://ondemand.rcc.mcw.edu/pun/sys/workspace-dashboard){ .md-button .md-button--primary target="_blank" rel="noopener" }
+
+To find it yourself, log in to [Open OnDemand](https://ondemand.rcc.mcw.edu){:target="_blank"} with your MCW username and password, then select **Workspaces > Workspace Dashboard** in the top menu, or click the **Workspace Dashboard** tile on the front page.
+
+What you can do with it:
+
+- **See everything at a glance.** Each workspace is a card with its path, expiry date, and a color badge for the days left. On the last day the badge counts down the hours.
+- **Create a workspace** in one form: pick a name and the number of days, and choose whether your lab can read and write it.
+- **Get reminder emails.** Tick one box, and you get a reminder at your MCW email address every night, starting about a week before the workspace expires.
+- **Extend with confidence.** The **Extend** button shows when you can extend. If it is too early, it shows the date you can, so you never waste a try.
+- **Share with people or groups** outside your lab, with read only or read and write access. See who has access, remove one person, or use **Remove everyone**, which shows the list of who will lose access before you confirm.
+- **See your lab's workspaces** on the **Lab workspaces** tab, and what your lab can do in each of yours: read and write, read only, or no access.
+- **Find what others shared with you** on the **Shared with me** tab.
+- **Release a workspace** when you are done, and optionally delete its files right away to free up your lab's quota. The dashboard asks you to confirm first.
+- **Restore a recently expired workspace** from the **Recently expired** tab, which shows the last day you can restore each one.
+- **Open a workspace** in the OnDemand file browser or a terminal with one click.
+
+!!! tip "Learn the command line as you go"
+    As you fill in a form, the dashboard shows the matching command, such as `ws_allocate -F lab_jsmith -d 30 -n rnaseq`, and it updates as you type. Every action also shows its **Command line equivalent**. Copy these commands into your job scripts, or run them in a terminal next time.
+
+For step by step instructions and screenshots, see the [Workspace Dashboard guide](workspace-dashboard.md).
 
 ## Quick Reference
 
