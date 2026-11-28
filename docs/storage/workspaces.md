@@ -113,6 +113,9 @@ This example starts reminders 7 days before the workspace expires. From then on,
 !!! warning "You cannot add a reminder later without using your extension"
     Reminders can only be set when you create a workspace, or when you extend it. Adding or changing a reminder on an existing workspace counts as your one extension. If you want to keep your extension, set the reminder when you create the workspace.
 
+!!! note "Your lab's migrated workspace already has reminders on"
+    When RCC moves your lab to workspaces, the files in your lab's scratch folder are moved into one workspace owned by the PI, `/scratch/g/pi_netid/pi_netid-migrated`. {{ ws_migrated_reminder }} Workspaces you create yourself have no reminder unless you add one.
+
 ## List Your Workspaces
 
 Run `ws_list`:
