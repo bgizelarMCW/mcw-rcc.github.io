@@ -1,7 +1,9 @@
-# Workspace extension policy, used on several pages as {{ ws_extend_rule }} etc.
-# Matches extensionthreshold / extensionwindow in the generated ws.d config.
+# Workspace extension and reminder policy, used on several pages as {{ ws_extend_rule }} etc.
+# Matches extensionthreshold / extensionwindow / reminderdefault in the generated ws.d config.
 # Change the numbers here, then check the "When You Can Extend" table and the
 # sample error message in docs/storage/workspaces.md.
 ws_extend_pct: 75
 ws_extend_window: 7
 ws_extend_rule: "You can extend a workspace once, after 75% of its lifetime has passed or when 7 days or less remain, whichever comes first (day 45 of a 60-day workspace)."
+ws_reminder_days: 7
+ws_reminder_rule: "Every workspace gets reminder emails: RCC emails you every night during the last 7 days before a workspace expires, until you extend it or it expires. You do not need to set anything up."

@@ -45,7 +45,7 @@ Scratch storage is intended for temporary job files. Every group has a directory
 
 Workspaces expire automatically 60 days after creation (or after their extension). When a workspace expires or you release it, it enters a 14-day grace period during which you can restore it. After that, the data is permanently deleted. Data in a workspace in its grace period still counts against your lab's scratch quota.
 
-RCC does not send expiration reminders by default. To be reminded, set a reminder when you [create the workspace](workspaces.md#get-an-expiration-reminder). If the scratch file system becomes full, RCC admins may need to delete files without notice, so please release workspaces you no longer need.
+RCC emails you every night during the last {{ ws_reminder_days }} days before a workspace expires. See [Expiration Reminder Emails](workspaces.md#expiration-reminder-emails). If the scratch file system becomes full, RCC admins may need to delete files without notice, so please release workspaces you no longer need.
 
 !!! warning "Scratch storage is for jobs, not projects."
 

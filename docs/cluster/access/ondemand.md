@@ -72,7 +72,7 @@ The **Workspace Dashboard** is the easy way to manage your [scratch workspaces](
 
 [Open the Workspace Dashboard](https://ondemand.rcc.mcw.edu/pun/sys/workspace-dashboard){ .md-button .md-button--primary target="_blank" rel="noopener" }
 
-Each workspace is shown as a card with its path, expiry date, and days left. You can create, extend, share, release, and restore workspaces, turn on expiry reminder emails, see who each workspace is shared with, and find workspaces others shared with you. As you fill in a form, the dashboard shows the matching `ws_*` command, so you can learn the command line as you go. See the [Workspace Dashboard guide](../../storage/workspace-dashboard.md).
+Each workspace is shown as a card with its path, expiry date, and days left. You can create, extend, share, release, and restore workspaces, see who each workspace is shared with, and find workspaces others shared with you. As you fill in a form, the dashboard shows the matching `ws_*` command, so you can learn the command line as you go. See the [Workspace Dashboard guide](../../storage/workspace-dashboard.md).
 
 ## Open Job Composer
 

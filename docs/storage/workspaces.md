@@ -20,7 +20,7 @@ What you can do with it:
 
 - **See everything at a glance.** Each workspace is a card with its path, expiry date, and a color badge for the days left. On the last day the badge counts down the hours.
 - **Create a workspace** in one form: pick a name and the number of days, and choose whether your lab can read and write it.
-- **Get reminder emails.** Tick one box, and you get a reminder at your MCW email address every night, starting about a week before the workspace expires.
+- **Get reminder emails automatically.** Every workspace you create gets a reminder at your MCW email address every night during the last {{ ws_reminder_days }} days before it expires. There is nothing to tick.
 - **Extend with confidence.** The **Extend** button shows when you can extend. If it is too early, it shows the date you can, so you never waste a try.
 - **Share with people or groups** outside your lab, with read only or read and write access. See who has access, remove one person, or use **Remove everyone**, which shows the list of who will lose access before you confirm.
 - **See your lab's workspaces** on the **Lab workspaces** tab, and what your lab can do in each of yours: read and write, read only, or no access.
@@ -61,7 +61,7 @@ For step by step instructions and screenshots, see the [Workspace Dashboard guid
 - An extension counts from the day you run it, not from the old expiration date.
 - Asking for fewer days than the workspace has left shortens it. A shorter request does not use up your extension.
 - Your lab group can read and write your workspace by default.
-- Expiration reminder emails are off by default. You must turn them on when you create the workspace. See [Get an Expiration Reminder](#get-an-expiration-reminder).
+- {{ ws_reminder_rule }} See [Expiration Reminder Emails](#expiration-reminder-emails).
 - After a workspace expires or is released, there is a 14-day grace period. The data is kept, and you can restore it yourself. After the grace period it is permanently deleted.
 - During the grace period the data still counts against your lab's scratch quota.
 
@@ -100,18 +100,17 @@ To keep a workspace private (owner only) instead of shared with your lab, add `-
 ws_allocate --private myproject
 ```
 
-### Get an Expiration Reminder
+### Expiration Reminder Emails
 
-RCC does not send expiration reminders by default. To get an email before your workspace expires, add `-r` (days before expiration) and `-m` (your email address) when you create it:
+{{ ws_reminder_rule }} The email goes to your MCW email address and comes from <help-rcc@mcw.edu>. Each email names the workspace and its expiration date. Once you extend a workspace, the emails stop until the last {{ ws_reminder_days }} days before its new expiration date.
 
-```bash
-ws_allocate -r 7 -m username@mcw.edu myproject
-```
+You can change the defaults when you create the workspace:
 
-This example starts reminders 7 days before the workspace expires. From then on, a reminder is sent every night until the workspace expires or you extend it.
+- `-r` sets how many days before expiration the nightly emails start. For example, `ws_allocate -r 14 myproject` starts them 14 days before.
+- `-m` sends them to another email address. For example, `ws_allocate -m name@mcw.edu myproject`.
 
-!!! warning "You cannot add a reminder later without using your extension"
-    Reminders can only be set when you create a workspace, or when you extend it. Adding or changing a reminder on an existing workspace counts as your one extension. If you want to keep your extension, set the reminder when you create the workspace.
+!!! warning "Changing a reminder later uses your extension"
+    `-r` and `-m` can only be set when you create a workspace, or when you extend it. Changing them on an existing workspace counts as your one extension. You do not need them to get reminders.
 
 ## List Your Workspaces
 
@@ -166,7 +165,7 @@ ws_extend -F lab_pi_netid myproject 60
 - The new expiration date is the number of days you ask for, counted from today.
 - If you ask for fewer days than remain, you are asked to confirm, and the workspace is shortened. Your extension is not used.
 - If you ask for more than 60 days, you are asked whether to continue with 60. In a script or batch job there is no question, and 60 is used with a warning.
-- To add or change a reminder while extending, use `ws_allocate -x -r 7 -m username@mcw.edu myproject 60`. This uses your extension, so the [extension rule](#when-you-can-extend) applies.
+- To change when reminders start, or where they go, while extending, use `ws_allocate -x -r 14 -m name@mcw.edu myproject 60`. This uses your extension, so the [extension rule](#when-you-can-extend) applies.
 - Check `available extensions` in `ws_list` to see if you have an extension left. When it shows 0, the workspace cannot be extended again.
 - Anyone in your lab can extend a workspace that is shared with the lab, using the owner's username. For example, to extend `myproject` owned by `jdoe`: `ws_allocate -x -F lab_pi_netid -u jdoe myproject 60`. The same rules apply, and it uses the workspace's one extension.
 
@@ -344,7 +343,7 @@ See [Using Data in a Job](../cluster/jobs/storage-job.md) for more.
 | `available extensions : 0`                                 | The workspace was already extended and cannot be extended again. Copy your data to group storage, or create a new workspace.                                                                                                 |
 | Extension did not give you more time                       | An extension counts from today. If you asked for fewer days than remained, the workspace was shortened.                                                                                                                      |
 | ws_extend says the workspace can not be extended yet       | It is too early: less than {{ ws_extend_pct }}% of its lifetime has passed and more than {{ ws_extend_window }} days remain. Run the command again on or after the date it shows. Your extension was not used.               |
-| You did not get an expiration email                        | Reminders are off by default. Set `-r` and `-m` when you create the workspace. See [Get an Expiration Reminder](#get-an-expiration-reminder).                                                                                |
+| You did not get an expiration email                        | Emails start {{ ws_reminder_days }} days before expiration, from <help-rcc@mcw.edu>. Check your junk folder. If you used `-m`, `ws_list -v` shows the address. See [Reminder Emails](#expiration-reminder-emails).           |
 | Cannot create files in `/scratch/g/pi_netid`               | Create a workspace with `ws_allocate`, and save files there.                                                                                                                                                                 |
 | A workspace expired or was released and you need the data  | Restore it within 14 days. See [Restore a Workspace](#restore-a-workspace).                                                                                                                                                  |
 | `ws_restore` does not work                                 | Create the new workspace first. Then copy the old name exactly as `ws_restore -l` shows it. Do not use the name from `ws_list`. Answer the quick question that appears.                                                      |

@@ -55,14 +55,13 @@ The buttons on the card:
 2. Type a **Name**, such as `rnaseq-run2`. The full path is shown to the left of the box. Use letters, numbers, dots, dashes, and underscores.
 3. Choose **How many days**, up to 60.
 4. Leave **Let my lab read and write it** ticked to share it with your lab, which is the usual choice. Untick it to keep the workspace private. You can still share a private workspace with people later.
-5. Optional: tick **Email me before it expires**. Starting the number of days shown next to the box (usually 7) before the workspace expires, you get a reminder at your MCW email address every night until it expires. RCC does not send reminders unless you tick this box.
-6. Optional: add a **Note** to remind you what the workspace is for. It is shown on the card.
-7. Click **Create workspace**.
+5. Optional: add a **Note** to remind you what the workspace is for. It is shown on the card.
+6. Click **Create workspace**.
 
 ![New workspace form](../_static/img/wsd-new.png){ width="560" }
 
-!!! note "Set the reminder now"
-    A reminder can only be added for free when you create a workspace. Adding one later uses the workspace's one extension. See [Get an Expiration Reminder](workspaces.md#get-an-expiration-reminder).
+!!! note "Reminder emails are automatic"
+    {{ ws_reminder_rule }} The form shows how many days before expiration they start, and they go to your MCW email address. See [Expiration Reminder Emails](workspaces.md#expiration-reminder-emails).
 
 ## Extend a Workspace
 
